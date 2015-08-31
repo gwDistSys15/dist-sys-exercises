@@ -125,9 +125,10 @@ Parameters:
 
 Be careful--since instantiating this class can cause an exception to be thrown, you will have to put this code inside a `try / catch` block.
 
-Once your socket is created, you use this with a PrintWriter object (which you've probably used for basic File I/O in the past). This code will create a new `PrintWriter` using the output stream of the socket and set the writer to automatically flush data (i.e., send it out the socket).
+Once your socket is created, you use this with a PrintWriter object (which you've probably used for basic File I/O in the past). This code will create a new `PrintWriter` using the output stream of the socket and set the writer to automatically flush data (i.e., send it out the socket):
 ```
-PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+// sock must be a Socket object
+PrintWriter out = new PrintWriter(sock.getOutputStream(), true);
 ```
 
 Now that you have a `PrintWriter`, you can use functions like `out.println("Hello World")` to have it send a string plus a new line character to the server.
@@ -138,8 +139,26 @@ If you also want to read from the socket to receive data, you would need to crea
 
 
 Allowable links:
-  * [Socket API](http://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
-  * [PrintWriter API](http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html)
-  * [BufferedReader API](http://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html)
+  * [Java Socket API](http://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
+  * [Java PrintWriter API](http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html)
+  * [Java BufferedReader API](http://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html)
 
 ## Client 3: Sockets in Python
+Python makes using sockets even easier (or at least with less code).
+
+To create a socket in Python you create a socket object:
+```
+import socket
+
+clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+```
+
+This socket object then exposes functions to `connect`, `send`, and `recv`.  The `connect` function takes a tuple `(hostname, port)` while `send` simply takes a string of the text to be sent.
+
+**Try to edit the `python/msgclient.py` file to correctly connect to your Message Board server and send it a name and message.**
+
+
+Allowable links:
+  * [Python Socket API](https://docs.python.org/2/library/socket.html#socket.socket)
+  * Python [send](https://docs.python.org/2/library/socket.html#socket.socket.send) and [recv](https://docs.python.org/2/library/socket.html#socket.socket.recv)
+  * [Python Socket How To](https://docs.python.org/2/howto/sockets.html#socket-howto)
