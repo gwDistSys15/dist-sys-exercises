@@ -10,6 +10,8 @@ The **server** acts as message board; it will print out any messages that are se
 
 The **client** connects to the server and sends its name and the message it wants printed.  After that it disconnects. The server does not send anything back to the client: I told you this was very simple!
 
+**IMPORTANT:** *During this exercise you **may NOT** go to any websites except this page, and those listed in the "Allowable Links" sections below.  Visiting any other website constitutes cheating!*
+
 ## Getting the code
 *Everyone in your group should do this!*
 
@@ -24,6 +26,7 @@ Before you can begin you need to get a copy of the sample code.
 In order to connect to your VM from another computer you need to know its IP or hostname.  
 
 **First,** open the *VM Settings* window by clicking the "..." icon next to your VM name on the left panel as shown in this screenshot:
+
 ![Koding VM Setup](_res/koding-setup1.png)
 
 On the first page of the popup window will be a table with your *Public IP* and *Assigned URL*.  Make a note of your IP.  
@@ -50,7 +53,90 @@ Try sending a few messages to verify that your server is working.
 **Once you know the server works, you can then try the different languages below in any order.**
 
 ## Client 1: Sockets in C
+To create a socket in C, you first need to get an `addrinfo` struct for the host you want to connect to. This is accomplished with the function:
+
+```
+     getaddrinfo(const char *hostname, const char *servname,
+             const struct addrinfo *hints, struct addrinfo **res);
+```
+The first argument is a string with the host name or IP, and the second is also a string (not an int like you might expect) with the service port.  The third argument provides parameters for the type of socket you want to create, and the final parameter will be filled in by the function if it is called successfully.
+
+Here is a sample usage:
+
+```
+struct addrinfo hints, *server;
+
+memset(&hints, 0, sizeof hints);
+hints.ai_family = AF_INET;
+hints.ai_socktype = SOCK_STREAM;
+
+if ((rc = getaddrinfo(server_ip, server_port, &hints, &server)) != 0) {
+        perror(gai_strerror(rc));
+        exit(-1);
+}
+```
+
+Once you have a valid `addrinfo` for your server, you can create a socket and connect it:
+
+```
+int sockfd = socket(server->ai_family, server->ai_socktype, server->ai_protocol);
+if (sockfd == -1) {
+        perror("ERROR opening socket");
+        exit(-1);
+}
+rc = connect(sockfd, server->ai_addr, server->ai_addrlen);
+if (rc == -1) {
+        perror("ERROR on connect");
+        close(sockfd);
+        exit(-1);
+}
+```
+
+Now your socket is connected, so you can `send` and `recv` data with the socket file descriptor returned by the `socket()` function.  Here are the function definitions from `man send` and `man recv`
+
+```
+ssize_t send(int socket, const void *buffer, size_t length, int flags);
+
+ssize_t recv(int socket, void *buffer, size_t length, int flags);
+```
+
+Both return the amount of data sent or received, and take arguments indicating the socket to send/recieve on, the data to send or a buffer to receive into, the length of data, and flags (which you can set to 0).
+
+**Try to edit the `c/msg_client.c` file to correctly connect to your Message Board server and send it a name and message.**
+
+Allowable links (**you may not go to any websites except these**):
+  * [getaddrinfo API](http://beej.us/guide/bgnet/output/html/multipage/getaddrinfoman.html)
+  * [socket API](http://beej.us/guide/bgnet/output/html/multipage/socketman.html)
+  * [connect API](http://beej.us/guide/bgnet/output/html/multipage/connectman.html)
+  * [send](http://beej.us/guide/bgnet/output/html/multipage/sendman.html) and [receive](http://beej.us/guide/bgnet/output/html/multipage/recvman.html) APIs
 
 ## Client 2: Sockets in Java
+Using sockets in Java is a bit simpler than C.  You simply need to create a `Socket` object. The simplest constructor for this class takes parameters for the host name and port:
+```
+public Socket(String host, int port)
+       throws UnknownHostException, IOException
+
+Creates a stream socket and connects it to the specified port number on the named host.
+
+Parameters:
+    host - the host name, or null for the loopback address.
+    port - the port number.
+```
+
+Be careful--since instantiating this class can cause an exception to be thrown, you will have to put this code inside a `try / catch` block.
+
+Once your socket is created, you use this with a PrintWriter object (which you've probably used for basic File I/O in the past). This code will create a new `PrintWriter` using the output stream of the socket and set the writer to automatically flush data (i.e., send it out the socket).
+```
+PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+```
+
+Now that you have a `PrintWriter`, you can use functions like `out.println("Hello World")` to have it send a string plus a new line character to the server.
+
+If you also want to read from the socket to receive data, you would need to create a `BufferedReader` object.  We'll save that for another day.
+
+Allowable links:
+  * [Socket API](http://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
+  * [PrintWriter API](http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html)
+  * [BufferedReader API](http://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html)
 
 ## Client 3: Sockets in Python
