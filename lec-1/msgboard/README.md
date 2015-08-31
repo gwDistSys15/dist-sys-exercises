@@ -10,7 +10,7 @@ The **server** acts as message board; it will print out any messages that are se
 
 The **client** connects to the server and sends its name and the message it wants printed.  After that it disconnects. The server does not send anything back to the client: I told you this was very simple!
 
-**IMPORTANT:** *During this exercise you **may NOT** go to any websites except this page, and those listed in the "Allowable Links" sections below.  **Visiting any other website is cheating!** *
+**IMPORTANT:** *During this exercise you* **may NOT** *go to any websites except this page, and those listed in the "Allowable Links" sections below.*  **Visiting any other website is cheating!**
 
 ## Getting the code
 *Everyone in your group should do this!*
