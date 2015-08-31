@@ -10,7 +10,7 @@ The **server** acts as message board; it will print out any messages that are se
 
 The **client** connects to the server and sends its name and the message it wants printed.  After that it disconnects. The server does not send anything back to the client: I told you this was very simple!
 
-**IMPORTANT:** *During this exercise you **may NOT** go to any websites except this page, and those listed in the "Allowable Links" sections below.  Visiting any other website constitutes cheating!*
+**IMPORTANT:** *During this exercise you **may NOT** go to any websites except this page, and those listed in the "Allowable Links" sections below.  **Visiting any other website is cheating!** *
 
 ## Getting the code
 *Everyone in your group should do this!*
@@ -133,6 +133,9 @@ PrintWriter out = new PrintWriter(s.getOutputStream(), true);
 Now that you have a `PrintWriter`, you can use functions like `out.println("Hello World")` to have it send a string plus a new line character to the server.
 
 If you also want to read from the socket to receive data, you would need to create a `BufferedReader` object.  We'll save that for another day.
+
+**Try to edit the `java/MsgClient.java` file to correctly connect to your Message Board server and send it a name and message.**
+
 
 Allowable links:
   * [Socket API](http://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
