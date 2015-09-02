@@ -17,7 +17,8 @@ The **client** connects to the server and sends its name and the message it want
 
 Before you can begin you need to get a copy of the sample code.
   * Start your VM on Koding.com
-  * in the terminal, run `git clone https://github.com/gwDistSys15/dist-sys-exercises.git`
+  * Use the github website to create a fork of this repository.
+  * in the terminal, run `git clone https://github.com/YOUR-USERNAME/dist-sys-exercises.git` (replace `YOUR-USERNAME` with your username)
   * run `cd dist-sys-exercises/lec-1/msgboard` to change to the directory containing all of the sample code for this exercise.
 
 ## Find your VM's hostname and IP
@@ -105,6 +106,7 @@ Both return the amount of data sent or received, and take arguments indicating t
 **Try to edit the `c/msg_client.c` file to correctly connect to your Message Board server and send it a name and message.**
 
 Allowable links (**you may not go to any websites except these**):
+  * [C for java programmers](http://www.cprogramming.com/java/c-and-c++-for-java-programmers.html)
   * [getaddrinfo API](http://beej.us/guide/bgnet/output/html/multipage/getaddrinfoman.html)
   * [socket API](http://beej.us/guide/bgnet/output/html/multipage/socketman.html)
   * [connect API](http://beej.us/guide/bgnet/output/html/multipage/connectman.html)
@@ -139,6 +141,7 @@ If you also want to read from the socket to receive data, you would need to crea
 
 
 Allowable links:
+  * [Java beginners tutorials](http://docs.oracle.com/javase/tutorial/java/index.html)
   * [Java Socket API](http://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
   * [Java PrintWriter API](http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html)
   * [Java BufferedReader API](http://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html)
@@ -159,6 +162,7 @@ This socket object then exposes functions to `connect`, `send`, and `recv`.  The
 
 
 Allowable links:
+  * [A basic Python tutorial](http://www.stavros.io/tutorials/python/)
   * [Python Socket API](https://docs.python.org/2/library/socket.html#socket.socket)
   * Python [send](https://docs.python.org/2/library/socket.html#socket.socket.send) and [recv](https://docs.python.org/2/library/socket.html#socket.socket.recv)
   * [Python Socket How To](https://docs.python.org/2/howto/sockets.html#socket-howto)
