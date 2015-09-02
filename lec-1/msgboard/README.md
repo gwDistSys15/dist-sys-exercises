@@ -17,8 +17,7 @@ The **client** connects to the server and sends its name and the message it want
 
 Before you can begin you need to get a copy of the sample code.
   * Start your VM on Koding.com
-  * Use the github website to create a fork of this repository.
-  * in the terminal, run `git clone https://github.com/YOUR-USERNAME/dist-sys-exercises.git` (replace `YOUR-USERNAME` with your username)
+  * in the terminal, run `git clone https://github.com/gwDistSys15/dist-sys-exercises.git`
   * run `cd dist-sys-exercises/lec-1/msgboard` to change to the directory containing all of the sample code for this exercise.
 
 ## Find your VM's hostname and IP
