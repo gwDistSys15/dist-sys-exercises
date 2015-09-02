@@ -163,3 +163,15 @@ Allowable links:
   * [Python Socket API](https://docs.python.org/2/library/socket.html#socket.socket)
   * Python [send](https://docs.python.org/2/library/socket.html#socket.socket.send) and [recv](https://docs.python.org/2/library/socket.html#socket.socket.recv)
   * [Python Socket How To](https://docs.python.org/2/howto/sockets.html#socket-howto)
+
+### Making your code easy to run
+If you reach this point you should have three working clients in three different programming languages.  Congratulations! There is one final task you must complete before you can submit your code.
+
+You should modify each of your programs so that they will accept command line arguments that determine the host that is connected to, the username sent as the first string, and the message sent.  For example:
+```
+python msgclient.py "user.koding.com"  "my name" my message"
+java MsgClient "192.168.1.1" "Joe" "Hello World"
+./msg_client "twood02.koding.com" "Chen"  "this is my message"
+```
+
+You can use any websites you like to learn how to use command line arguments in each of these languages.
