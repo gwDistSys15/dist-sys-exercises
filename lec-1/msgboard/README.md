@@ -13,7 +13,6 @@ The **client** connects to the server and sends its name and the message it want
 **IMPORTANT:** *During this exercise you* **may NOT** *go to any websites except this page, and those listed in the "Allowable Links" sections below.*  **Visiting any other website is cheating!**
 
 ## Getting the code
-*Everyone in your group should do this!*
 
 Before you can begin you need to get a copy of the sample code.
   * Start your VM on Koding.com
@@ -21,7 +20,6 @@ Before you can begin you need to get a copy of the sample code.
   * run `cd dist-sys-exercises/lec-1/msgboard` to change to the directory containing all of the sample code for this exercise.
 
 ## Find your VM's hostname and IP
-*Everyone in your group should do this!*
 
 In order to connect to your VM from another computer you need to know its IP or hostname.  
 
@@ -34,14 +32,14 @@ On the first page of the popup window will be a table with your *Public IP* and 
 **Second**, click on the *Domains* tab of the settings window and click the slider to enable the domain "yourusername.koding.io".  This will allow you to easily access your VM with the host name `yourusername.koding.io`
 
 ## Starting the Server
-*Select one of the students in your group to run the server. Only she or he needs to follow these directions*
-
 The provided server is written in Java so you will need to compile and then run the program as follows.
 ```
 cd server              # change to the server/ directory
 javac MsgServer.java   # compile the code
 java MsgServer         # start the server
 ```
+
+**Note:** You will need to run your own copy of the server and you will need to change the IP/hostname in the sample client code to connect to your version of the server, not mine!
 
 ## Client 0: `telnet`
 The first client you will use to connect to the server won't require any coding at all--you will use `telnet`.  Telnet is a very simple program that is useful for debugging network applications and protocols.  It simply sends and receives lines of data to and from a server.  To run telnet, run: `telnet HOST port`
@@ -105,6 +103,7 @@ Both return the amount of data sent or received, and take arguments indicating t
 **Try to edit the `c/msg_client.c` file to correctly connect to your Message Board server and send it a name and message.**
 
 Allowable links (**you may not go to any websites except these**):
+  * [C for java programmers](http://www.cprogramming.com/java/c-and-c++-for-java-programmers.html)
   * [getaddrinfo API](http://beej.us/guide/bgnet/output/html/multipage/getaddrinfoman.html)
   * [socket API](http://beej.us/guide/bgnet/output/html/multipage/socketman.html)
   * [connect API](http://beej.us/guide/bgnet/output/html/multipage/connectman.html)
@@ -139,6 +138,7 @@ If you also want to read from the socket to receive data, you would need to crea
 
 
 Allowable links:
+  * [Java beginners tutorials](http://docs.oracle.com/javase/tutorial/java/index.html)
   * [Java Socket API](http://docs.oracle.com/javase/7/docs/api/java/net/Socket.html)
   * [Java PrintWriter API](http://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html)
   * [Java BufferedReader API](http://docs.oracle.com/javase/7/docs/api/java/io/BufferedReader.html)
@@ -159,6 +159,19 @@ This socket object then exposes functions to `connect`, `send`, and `recv`.  The
 
 
 Allowable links:
+  * [A basic Python tutorial](http://www.stavros.io/tutorials/python/)
   * [Python Socket API](https://docs.python.org/2/library/socket.html#socket.socket)
   * Python [send](https://docs.python.org/2/library/socket.html#socket.socket.send) and [recv](https://docs.python.org/2/library/socket.html#socket.socket.recv)
   * [Python Socket How To](https://docs.python.org/2/howto/sockets.html#socket-howto)
+
+# Making your code easy to run
+If you reach this point you should have three working clients in three different programming languages.  Congratulations! There is one final task you must complete before you can submit your code.
+
+You should modify each of your programs so that they will accept command line arguments that determine the host that is connected to, the username sent as the first string, and the message sent.  For example:
+```
+python msgclient.py "user.koding.com"  "my name" my message"
+java MsgClient "192.168.1.1" "Joe" "Hello World"
+./msg_client "twood02.koding.com" "Chen"  "this is my message"
+```
+
+You can use any websites you like to learn how to use command line arguments in each of these languages.
