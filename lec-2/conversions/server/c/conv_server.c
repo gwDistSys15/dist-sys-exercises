@@ -23,7 +23,7 @@ static void
 usage(const char* progname) {
     printf("Usage: %s ", progname);
     printf("	  	-m : 's' for run as server; 'c' for as client; default as server\n");
-    printf("       	-p : your server port number\n");
+    printf("       	-p : your port number\n");
     printf("\n\n");
 }
 
