@@ -6,14 +6,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
 #include <string.h>
-
+#include <sys/socket.h>
 
 static char* server_port = "5555";
 static int mode_flag = 0; //0:server mode; 1: client mode 
-
+static char* msg = "welcome\n";
 
 
 /*
@@ -51,7 +52,8 @@ parse_app_args(int argc, char* argv[]) {
             mode_flag = 1;
         }
         break;
-        case 'p':
+        
+	case 'p':
         server_port = optarg;
         break;
         
@@ -71,9 +73,9 @@ void processing(int sock){
     
     int n;
     char buffer[1024];
-    bzero(buffer,256);
+    bzero(buffer, 1024);
     
-    n = read(sock,buffer,255);
+    n = read(sock, buffer, 1023);
     
     
     if (n < 0)
@@ -85,7 +87,7 @@ void processing(int sock){
     printf("Here is the message: %s\n",buffer);
     
     /* Write a response to the client */
-    n = write(sock,"Welcome, the packet is received\n",18);
+    n = write(sock, msg, sizeof(msg));
     
     if (n < 0)
     {
@@ -102,6 +104,7 @@ void processing(int sock){
 
 int main( int argc, char **argv )
 {
+    int optval = 1;
     int sockfd, newsockfd;
     socklen_t clilen;
     char buffer[256];
@@ -115,6 +118,7 @@ int main( int argc, char **argv )
 
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
     
     if (sockfd < 0)
     {
@@ -156,6 +160,8 @@ int main( int argc, char **argv )
      */
     processing(newsockfd);
     
+    close(sockfd);
+    close(newsockfd);
     
     return 0;
 }
