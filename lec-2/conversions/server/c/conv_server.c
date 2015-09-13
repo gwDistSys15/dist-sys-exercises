@@ -11,13 +11,66 @@
 #include <string.h>
 
 
-/* If connection is established then send out welcome message */
+static char* server_port = "5555";
+static int mode_flag = 0; //0:server mode; 1: client mode 
+
+
+
+/*
+ * Print a usage message
+ */
+static void
+usage(const char* progname) {
+    printf("Usage: %s ", progname);
+    printf("	  	-m : 's' for run as server; 'c' for as client; default as server\n");
+    printf("       	-p : your server port number\n");
+    printf("\n\n");
+}
+
+
+/*
+ * Parse the application arguments.
+ */
+static int
+parse_app_args(int argc, char* argv[]) {
+    const char* progname = argv[0];
+    const char* flag_server = "s";
+    const char* flag_client = "c";
+    int rc;
+   
+
+    opterr = 0;
+    
+    while ((rc = getopt (argc, argv, "m:p:")) != -1)
+    switch (rc) {
+        case 'm':
+        if (optarg == flag_server) {
+            mode_flag = 0;
+        }
+        if (optarg == flag_client) {
+            mode_flag = 1;
+        }
+        break;
+        case 'p':
+        server_port = optarg;
+        break;
+        
+        default:
+        usage(progname);
+    }
+    return optind;
+}
+
+
+
+/*
+ *If connection is established then send out welcome message
+ */
 
 void processing(int sock){
     
     int n;
     char buffer[256];
-    
     bzero(buffer,256);
     
     n = read(sock,buffer,255);
@@ -43,14 +96,23 @@ void processing(int sock){
 
 
 
-int main( int argc, char *argv[] )
+
+
+
+
+int main( int argc, char **argv )
 {
-    int sockfd, newsockfd, portnum;
+    int sockfd, newsockfd;
     socklen_t clilen;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
     
+    if (parse_app_args(argc, argv) < 0){
+        printf("Invalid command-line arguments\n");
+    }
+
+
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     
@@ -62,11 +124,10 @@ int main( int argc, char *argv[] )
     
     /* Initialize socket structure */
     bzero((char *) &serv_addr, sizeof(serv_addr));
-    portnum = 5555;
     
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(portnum);
+    serv_addr.sin_port = htons(atoi(server_port));
     
     /* Now bind the host address using bind() call.*/
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
