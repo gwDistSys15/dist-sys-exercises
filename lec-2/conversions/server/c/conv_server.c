@@ -160,6 +160,7 @@ int main( int argc, char **argv )
      */
     processing(newsockfd);
     
+    /*clean up*/
     close(sockfd);
     close(newsockfd);
     
