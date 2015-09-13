@@ -137,7 +137,7 @@ int main( int argc, char **argv )
     }
     
     /*
-     *Listening for the clients
+     *Listening for the client
      */
     
     listen(sockfd,5);
