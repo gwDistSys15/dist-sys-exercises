@@ -70,7 +70,7 @@ parse_app_args(int argc, char* argv[]) {
 void processing(int sock){
     
     int n;
-    char buffer[256];
+    char buffer[1024];
     bzero(buffer,256);
     
     n = read(sock,buffer,255);
@@ -85,7 +85,7 @@ void processing(int sock){
     printf("Here is the message: %s\n",buffer);
     
     /* Write a response to the client */
-    n = write(sock,"Welcome, the packet is received",18);
+    n = write(sock,"Welcome, the packet is received\n",18);
     
     if (n < 0)
     {
