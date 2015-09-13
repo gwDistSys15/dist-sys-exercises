@@ -12,6 +12,7 @@
 #include <string.h>
 #include <sys/socket.h>
 
+static int buffer_size = 1024; 
 static char* server_port = "5555";
 static int mode_flag = 0; //0:server mode; 1: client mode 
 static char* msg = "welcome\n";
@@ -72,11 +73,10 @@ parse_app_args(int argc, char* argv[]) {
 void processing(int sock){
     
     int n;
-    char buffer[1024];
-    bzero(buffer, 1024);
+    char buffer[buffer_size];
+    bzero(buffer, buffer_size);
     
-    n = read(sock, buffer, 1023);
-    
+    n = read(sock, buffer, buffer_size - 1);
     
     if (n < 0)
     {
