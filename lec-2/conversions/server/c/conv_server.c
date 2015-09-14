@@ -153,9 +153,10 @@ int main(int argc, char ** argv){
     //--TODO: add arguments exception handling here
     if (argc != 2){
         usage(progname);
+	exit(1);
     }
     
-    port = argc[1];
+    port = argv[1];
     
     if (server() != 0){
 	printf("server in trouble\n");
