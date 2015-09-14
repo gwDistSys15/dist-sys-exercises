@@ -172,7 +172,7 @@ server( void )
         
     /* read: print the client's request */
     bzero(buf, BUFSIZE);
-    n = read(sockfd, buf, BUFSIZE);
+    n = read(newsockfd, buf, BUFSIZE);
     if (n < 0){
         perror("ERROR reading from socket");
         exit(1);
