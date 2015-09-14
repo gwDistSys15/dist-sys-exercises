@@ -21,7 +21,6 @@
 
 static int mode_flag = 0; //0:server mode; 1: client mode 
 
-static int buffer_size = 1024; 
 static char* port;
 static char* msg = "welcome, connected\n";
 
@@ -101,16 +100,7 @@ parse_app_args(int argc, char* argv[]) {
 void 
 processing(int sock)
 {
-	int n;
-	buffer_size = sizeof(value);
-	bzero(value, buffer_size);
-    
-    n = read(sock, value, buffer_size);
-    
-    if (n < 0){
-        perror("ERROR reading from socket");
-        exit(1);
-    }
+    int n;
 
     printf("Here is the message: %s\n", value);
     
@@ -137,7 +127,6 @@ server( int argc, char **argv )
     int optval = 1;
     int sockfd, newsockfd;
     socklen_t clilen;
-    char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
 
@@ -223,9 +212,9 @@ client(int argc, char ** argv)
         exit(-1);
     }
     
-    rc = send(sockfd, value, strlen(value)+1, 0);
+    rc = send(sockfd, value, strlen(value) + 1, 0);
     if(rc < 0) {
-        perror("ERROR on send message");
+        perror("ERROR on send value");
         exit(-1);
     }
     
@@ -257,14 +246,14 @@ int main(int argc, char ** argv){
     }
     
     if (mode_flag == 0){
-        if (server(argc, argv) == 1){
+        if (server(argc, argv) != 0){
 		printf("server in trouble\n");
 		exit(1);	
         }
     }
     
     if (mode_flag == 1){
-        if (client(argc, argv) == 1){
+        if (client(argc, argv) != 0){
 		printf("client in trouble\n");
 		exit(1);	
         }
