@@ -14,10 +14,14 @@
 #include <string.h>
 #include <sys/socket.h>
 
-static int buffer_size = 1024; 
-static char* server_port = "5555";
 static int mode_flag = 0; //0:server mode; 1: client mode 
+
+static int buffer_size = 1024; 
+static char* port;
 static char* msg = "welcome, connected\n";
+
+static char* server_ip;
+static char* value = "value\n";
 
 
 /*
@@ -30,6 +34,7 @@ usage(const char* progname) {
     printf("  -m : 's' for run as server; 'c' for as client; default as server\n");
     printf("  -p : your port number\n");
     //--TODO: add arguments explaination here 
+    printf("  -h : your server ip address\n");
     printf("\n\n");
 }
 
@@ -47,7 +52,7 @@ parse_app_args(int argc, char* argv[]) {
 
     opterr = 0;
     
-    while ((rc = getopt (argc, argv, "m:p:")) != -1)
+    while ((rc = getopt (argc, argv, "m:p:h:")) != -1)
     switch (rc) {
         case 'm':
         if (optarg == flag_server) {
@@ -59,10 +64,14 @@ parse_app_args(int argc, char* argv[]) {
         break;
         
 	case 'p':
-        server_port = optarg;
+        port = optarg;
         break;
         
 	//--TODO: add arguments handling here   
+
+	case 'h':
+        server_ip = optarg;
+        break;
 
         default:
         usage(progname);
@@ -106,34 +115,21 @@ processing(int sock)
 
 
 
-
+/*
+ * Server
+ */
 
 
 
 int 
-main( int argc, char **argv )
+server( int argc, char **argv )
 {
-	int optval = 1;
+    int optval = 1;
     int sockfd, newsockfd;
     socklen_t clilen;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
-    const char* progname = argv[0];
-
-    //--TODO: add arguments exception handling here      
-    if (argc < 3){
-    	usage(progname);
-        printf("Not enough command-line arguments\n");
-        exit(1);
-    }
-    
-    if (parse_app_args(argc, argv) < 0){
-    	usage(progname);
-        printf("Invalid command-line arguments\n");
-        exit(1);
-    }
-
 
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -149,7 +145,7 @@ main( int argc, char **argv )
     
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;
-    serv_addr.sin_port = htons(atoi(server_port));
+    serv_addr.sin_port = htons(atoi(port));
     
     /* Now bind the host address using bind() call.*/
     if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
@@ -181,4 +177,82 @@ main( int argc, char **argv )
     close(newsockfd);
     
     return 0;
+}
+
+
+/*
+ * Client
+ */
+
+int
+client(int argc, char ** argv)
+{
+    int rc;
+    struct addrinfo hints, *server;
+    
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+    
+    if ((rc = getaddrinfo(server_ip, port, &hints, &server)) != 0) {
+        perror(gai_strerror(rc));
+        exit(-1);
+    }
+    
+    
+    int sockfd = socket(server->ai_family, server->ai_socktype, server->ai_protocol);
+    if (sockfd == -1) {
+        perror("ERROR opening socket");
+        exit(-1);
+    }
+    
+    rc = connect(sockfd, server->ai_addr, server->ai_addrlen);
+    if (rc == -1) {
+        perror("ERROR on connect");
+        close(sockfd);
+        exit(-1);
+    }
+    
+    rc = send(sockfd, value, strlen(msg)+1, 0);
+    if(rc < 0) {
+        perror("ERROR on send message");
+        exit(-1);
+    }
+    
+    
+    freeaddrinfo(server);
+    close(sockfd);
+    
+    printf("Done.\n");
+    return 0;
+    
+}
+
+int main(int argc, char ** argv){
+    
+    const char* progname = argv[0];
+    
+    //--TODO: add arguments exception handling here
+    if (argc < 3){
+        usage(progname);
+        printf("Not enough command-line arguments\n");
+        exit(1);
+    }
+    
+    if (parse_app_args(argc, argv) < 0){
+        usage(progname);
+        printf("Invalid command-line arguments\n");
+        exit(1);
+    }
+    
+    if (mode_flag == 0){
+        server(argc, argv);
+    }
+    
+    if (mode_flag == 1){
+        client(argc, argv);
+    }
+    
+    
+
 }
