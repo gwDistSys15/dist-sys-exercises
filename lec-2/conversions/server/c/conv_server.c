@@ -59,12 +59,12 @@ parse_app_args(int argc, char* argv[]) {
     while ((r = getopt (argc, argv, "scp:h:v:")) != -1)
     switch (r) {
         case 's':
-		// if the ar$igument is s, run server code
+		// if the ar$igument is s, run server
 		mode_flag = 0;
         break;
         
 	case 'c':
-		// if the argument is c, run client codd
+		// if the argument is c, run client 
 		mode_flag = 1;
 	break;
 
