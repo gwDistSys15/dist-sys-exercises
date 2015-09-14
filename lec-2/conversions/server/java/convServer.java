@@ -3,12 +3,8 @@
  *  CS 6421 - Simple Conversation
  *  Compilation:  javac convServer.java
  *  Execution:    java convServer port
- *  Dependencies: In.java Out.java
- *
  *
  *  % java convServer portnum
- *
- *
  ******************************************************************************/
 
 import java.net.Socket;
