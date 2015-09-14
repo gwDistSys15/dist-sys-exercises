@@ -104,6 +104,8 @@ processing(int sock)
 
     printf("Here is the message: %s\n", value);
     
+    //--TODO: add your converting functions here, msg = func(value);
+    
     /* Write a response to the client */
     n = write(sock, msg, strlen(msg));
     
