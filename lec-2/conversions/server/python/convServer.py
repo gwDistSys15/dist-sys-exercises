@@ -1,6 +1,11 @@
 #!/usr/bin/env python
-# for distributed system
-# simple python server: usage: python convServer.py portnum
+
+#******************************************************************************
+#  
+#  CS 6421 - Simple Conversation
+#  Execution:    python convServer.py portnum
+#
+#******************************************************************************
 
 import socket
 import sys
