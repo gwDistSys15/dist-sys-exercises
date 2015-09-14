@@ -29,6 +29,7 @@ usage(const char* progname) {
     printf("\n");
     printf("  -m : 's' for run as server; 'c' for as client; default as server\n");
     printf("  -p : your port number\n");
+    //--TODO: add arguments explaination here 
     printf("\n\n");
 }
 
@@ -61,6 +62,8 @@ parse_app_args(int argc, char* argv[]) {
         server_port = optarg;
         break;
         
+	//--TODO: add arguments handling here   
+
         default:
         usage(progname);
 	exit(1);
@@ -74,12 +77,14 @@ parse_app_args(int argc, char* argv[]) {
  *If connection is established then send out welcome message
  */
 
+//--TODO: add your converting functions here 
+
 void 
 processing(int sock)
 {
-    int n;
-    char buffer[buffer_size];
-    bzero(buffer, buffer_size);
+	int n;
+	char buffer[buffer_size];
+	bzero(buffer, buffer_size);
     
     n = read(sock, buffer, buffer_size);
     
@@ -87,8 +92,6 @@ processing(int sock)
         perror("ERROR reading from socket");
         exit(1);
     }
-    
-//--TODO: add your converting functions here 
 
     printf("Here is the message: %s\n",buffer);
     
@@ -110,14 +113,15 @@ processing(int sock)
 int 
 main( int argc, char **argv )
 {
-    int optval = 1;
+	int optval = 1;
     int sockfd, newsockfd;
     socklen_t clilen;
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
     const char* progname = argv[0];
-    
+
+    //--TODO: add arguments exception handling here      
     if (argc < 3){
     	usage(progname);
         printf("Not enough command-line arguments\n");
