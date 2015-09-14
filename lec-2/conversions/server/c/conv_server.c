@@ -86,7 +86,6 @@ parse_app_args(int argc, char* argv[]) {
         usage(progname);
 	exit(1);
     }
-    printf("%d\n", mode_flag);
     return optind;
 }
 
@@ -187,8 +186,10 @@ server( void )
 int
 client( void )
 {
-    int rc;
+    int rc, n;
     struct addrinfo hints, *server;
+    int BUFSIZE = 1024;
+    char buf[BUFSIZE];
     
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_INET;
@@ -219,6 +220,14 @@ client( void )
         exit(-1);
     }
     
+    /* read: print the server's reply */
+    bzero(buf, BUFSIZE);
+    n = read(sockfd, buf, BUFSIZE);
+    if (n < 0){
+        perror("ERROR reading from socket");
+    }
+    printf("Reply from server: %s", buf);
+    
     
     freeaddrinfo(server);
     close(sockfd);
@@ -234,7 +243,7 @@ int main(int argc, char ** argv){
     const char* progname = argv[0];
     
     //--TODO: add arguments exception handling here
-    if (argc < 5){
+    if (argc < 3){
         printf("Not enough command-line arguments\n");
         usage(progname);
         exit(1);
