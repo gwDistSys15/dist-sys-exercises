@@ -3,6 +3,16 @@ For this exercise we will build a variety of conversion servers---programs which
 
 **You will do this exercise in groups of 2-3 students.** Each table must have three different groups if possible.
 
+**First, be sure to get the code!** Use these commands:
+```
+# If you don't already have a copy form Exercise 1:
+git clone https://github.com/gwDistSys15/dist-sys-exercises.git
+
+# Or, if you do have an old clone of the repo, then just update it:
+cd dist-sys-exercises
+git pull origin master
+```
+
 ## Pick a Service. Write a Server.
 Each group must pick one of the services from the following list.  No duplicates can be picked until all services have been selected once. Alternatively, you can propose a new conversion, as long as one of its units is already included in the list below.
 
