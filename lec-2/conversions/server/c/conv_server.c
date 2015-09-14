@@ -5,8 +5,7 @@
  *  	It sends out a welcome message when receive connection from client.
  *  Compilation: gcc -o conv_server conv_server.c to compile 
  *  Execution: 
- * 	1. server: sudo ./conv_server -s -p portnum 
- * 	2. client: sudo ./conv_server -c -h server_ip -p portnum -v value 
+ * 	 server: sudo ./conv_server portnum 
  * 
  **************************************************************************/
 #include <stdio.h>
@@ -23,7 +22,7 @@
 #include <sys/socket.h>
 
 
-int mode_flag = 0; //0:server mode; 1: client mode 
+
 
 static char* port;
 static char* msg = "welcome, connected\n";
@@ -37,61 +36,10 @@ static char* value = "value\n";
  */
 static void
 usage(const char* progname) {
-    printf("Usage: %s ", progname);
-    printf("\n");
-    printf("  -s : 's' for run as server; default as server\n");
-    printf("  -c : 'c' for run as client; default as server\n");
-    printf("  -p : your port number\n");
-    //--TODO: add arguments explaination here 
-    printf("  -h : your server ip address\n");
-    printf("  -v : your value here\n");
-    printf("\n\n");
+    printf("Usage:  ./conv_server portnum\n");
 }
 
 
-/*
- * Parse the application arguments.
- */
-static int
-parse_app_args(int argc, char* argv[]) {
-    const char* progname = argv[0];
-    int r;
-   
-
-    opterr = 0;
-    
-    while ((r = getopt (argc, argv, "scp:h:v:")) != -1)
-    switch (r) {
-        case 's':
-		// if the ar$igument is s, run server
-		mode_flag = 0;
-        break;
-        
-	case 'c':
-		// if the argument is c, run client 
-		mode_flag = 1;
-	break;
-
-	case 'p':
-        port = optarg;
-        break;
-        
-	//--TODO: add arguments handling here   
-
-	case 'h':
-        server_ip = optarg;
-        break;
-
-	case 'v':
-        value = optarg;
-        break;
-        
-	default:
-        usage(progname);
-	exit(1);
-    }
-    return optind;
-}
 
 
 
@@ -197,95 +145,23 @@ server( void )
 }
 
 
-/*
- * Client
- */
-
-int
-client( void )
-{
-    int rc, n;
-    struct addrinfo hints, *server;
-    int BUFSIZE = 1024;
-    char buf[BUFSIZE];
-    
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
-    
-    if ((rc = getaddrinfo(server_ip, port, &hints, &server)) != 0) {
-        perror(gai_strerror(rc));
-        exit(-1);
-    }
-    
-    
-    int sockfd = socket(server->ai_family, server->ai_socktype, server->ai_protocol);
-    if (sockfd == -1) {
-        perror("ERROR opening socket");
-        exit(-1);
-    }
-    
-    rc = connect(sockfd, server->ai_addr, server->ai_addrlen);
-    if (rc == -1) {
-        perror("ERROR on connect");
-        close(sockfd);
-        exit(-1);
-    }
-    
-    rc = send(sockfd, value, strlen(value) + 1, 0);
-    if(rc < 0) {
-        perror("ERROR on send value");
-        exit(-1);
-    }
-    
-    /* read: print the server's reply */
-    bzero(buf, BUFSIZE);
-    n = read(sockfd, buf, BUFSIZE);
-    if (n < 0){
-        perror("ERROR reading from socket");
-    }
-    printf("Reply from server: %s", buf);
-    
-    
-    freeaddrinfo(server);
-    close(sockfd);
-    
-    printf("Done.\n");
-    
-    return 0;
-    
-}
 
 int main(int argc, char ** argv){
     
     const char* progname = argv[0];
     
     //--TODO: add arguments exception handling here
-    if (argc < 3){
-        printf("Not enough command-line arguments\n");
+    if (argc != 2){
         usage(progname);
-        exit(1);
     }
     
-    if (parse_app_args(argc, argv) < 0){
-        printf("Invalid command-line arguments\n");
-        usage(progname);
-        exit(1);
+    port = argc[1];
+    
+    if (server() != 0){
+	printf("server in trouble\n");
+	exit(1);	
     }
     
-    if (mode_flag == 0){
-        if (server() != 0){
-		printf("server in trouble\n");
-		exit(1);	
-        }
-    }
-    
-    if (mode_flag == 1){
-        if (client() != 0){
-		printf("client in trouble\n");
-		exit(1);	
-        }
-    }
     
     exit(1);
 
