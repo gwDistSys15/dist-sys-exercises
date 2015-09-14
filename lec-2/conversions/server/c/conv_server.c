@@ -1,6 +1,6 @@
 
 /**************************************************************************
- *  Single threaded conversation server templete 
+ *  Single threaded convertion server templete 
  *  It sends out a welcome message when receive connection from client.
  *  please use gcc -o conv_server conv_server.c to compile 
  *  please use sudo ./conv_server -p portnum to run
