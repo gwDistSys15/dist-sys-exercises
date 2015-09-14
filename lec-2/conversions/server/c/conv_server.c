@@ -113,7 +113,7 @@ processing(int sock)
 int 
 main( int argc, char **argv )
 {
-	int optval = 1;
+    int optval = 1;
     int sockfd, newsockfd;
     socklen_t clilen;
     char buffer[256];
