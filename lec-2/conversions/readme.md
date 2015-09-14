@@ -38,7 +38,7 @@ y | yen
 
 Your group must write a server which accepts requests to convert between the two units you have selected. It should be able to convert in either direction.  
 
-**You may choose to write your server in C, Python, or Java. I suggest Python or Java.**
+**You may choose to write your server in C, Python, or Java. I suggest Python or Java.** There are example server programs which can send a welcome message to the client and receive an input string. You should copy one of these to make your program.
 
 #### Protocol Specification
 
@@ -59,11 +59,61 @@ For example the request `"ft in 1.25"` should get the response `"15"`, while `"i
 
 You should test that your server works using `telnet` as the client.
 
-## Answering Questions
+#### Parsing Requests
+You will have to use string parsing functions to extract the different portions of the request.  Here are some tips.
+
+##### C version:
+You could use:
+```
+char * strtok (char *restrict newstring, const char *restrict delimiters)
+```
+
+This function returns a piece of `newstring` that has been separated using the delimiter character from `delimiters`. For example:
+
+```
+const char s[2] = " "; // space as delimiter
+char *token;
+/* get the first token */
+token = strtok(str, s);  
+/* walk through other tokens */
+while( token != NULL ) {
+  printf( " %s\n", token )   
+  token = strtok(NULL, s);
+}
+```
+
+Learn more: http://www.gnu.org/software/libc/manual/html_node/Finding-Tokens-in-a-String.html
+
+##### Java version:
+You could use the "split" method as below:
+
+```
+String[] tokens = str.split("  ");
+for(String s:tokens){
+       System.out.println(s);
+   }
+```
+
+Learn more: http://javadevnotes.com/java-string-split-tutorial-and-examples
+
+##### Python version:
+You could use split function as below:
+```
+mylist = inputString.split(" ")
+for item in mylist:
+   print item
+```
+Learn more: http://www.tutorialspoint.com/python/string_split.htm
+
+**You will also need to convert from strings to floating point numbers.  You can use any websites you'd like to learn how to do that.**
+
+## Answering Questions with Multiple Services
 Using these services, we will try to answer questions like:
   - How many kilograms is 45.6 pounds?
   - If I lay 150 bananas end to end, how long will they be in feet?
   - How much would it cost in Japanese Yen for enough bananas to get 43 grams of potassium?
   - If I buy $56.34 worth of bananas and lay them end to end, how long will they be in centimeters?
+
+To do this, you will have to make a server that is capable of talking with other servers!  Try it out!
 
 What is the most interesting question you can answer using the servers written by groups at your table?  What if you talk with students from other tables?
