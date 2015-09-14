@@ -1,7 +1,9 @@
 
 /**************************************************************************
- *	This is a single threaded conversation server.
+ *  Single threaded conversation server templete 
  *  It sends out a welcome message when receive connection from client.
+ *  please use gcc -o conv_server conv_server.c to compile 
+ *  please use sudo ./conv_server -p portnum to run
  **************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -86,6 +88,8 @@ processing(int sock)
         exit(1);
     }
     
+//--TODO: add your converting functions here 
+
     printf("Here is the message: %s\n",buffer);
     
     /* Write a response to the client */
@@ -113,8 +117,16 @@ main( int argc, char **argv )
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
     
+    if (argc < 3){
+    	usage(progname);
+        printf("Not enough command-line arguments\n");
+        exit(1);
+    }
+    
     if (parse_app_args(argc, argv) < 0){
+    	usage(progname);
         printf("Invalid command-line arguments\n");
+        exit(1);
     }
 
 
