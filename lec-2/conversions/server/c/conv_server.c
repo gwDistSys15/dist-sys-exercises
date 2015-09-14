@@ -131,6 +131,8 @@ server( void )
     socklen_t clilen;
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
+    int BUFSIZE = 1024;
+    char buf[BUFSIZE];
 
     /* First call to socket() function */
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -167,6 +169,16 @@ server( void )
         perror("ERROR on accept");
         exit(1);
     }
+        
+    /* read: print the client's request */
+    bzero(buf, BUFSIZE);
+    n = read(sockfd, buf, BUFSIZE);
+    if (n < 0){
+        perror("ERROR reading from socket");
+        exit(1);
+    }
+    value = buf;
+   
     
     /*
      *Processing and send out welcome message
