@@ -40,6 +40,7 @@ usage(const char* progname) {
     printf("  -p : your port number\n");
     //--TODO: add arguments explaination here 
     printf("  -h : your server ip address\n");
+    printf("  -v : your value here\n");
     printf("\n\n");
 }
 
@@ -57,7 +58,7 @@ parse_app_args(int argc, char* argv[]) {
 
     opterr = 0;
     
-    while ((rc = getopt (argc, argv, "m:p:h:")) != -1)
+    while ((rc = getopt (argc, argv, "m:p:h:v:")) != -1)
     switch (rc) {
         case 'm':
         if (optarg == flag_server) {
@@ -78,7 +79,11 @@ parse_app_args(int argc, char* argv[]) {
         server_ip = optarg;
         break;
 
-        default:
+	case 'v':
+        value = optarg;
+        break;
+        
+	default:
         usage(progname);
 	exit(1);
     }
@@ -97,17 +102,17 @@ void
 processing(int sock)
 {
 	int n;
-	char buffer[buffer_size];
-	bzero(buffer, buffer_size);
+	buffer_size = sizeof(value);
+	bzero(value, buffer_size);
     
-    n = read(sock, buffer, buffer_size);
+    n = read(sock, value, buffer_size);
     
     if (n < 0){
         perror("ERROR reading from socket");
         exit(1);
     }
 
-    printf("Here is the message: %s\n",buffer);
+    printf("Here is the message: %s\n", value);
     
     /* Write a response to the client */
     n = write(sock, msg, strlen(msg));
@@ -229,6 +234,7 @@ client(int argc, char ** argv)
     close(sockfd);
     
     printf("Done.\n");
+    
     return 0;
     
 }
@@ -254,16 +260,16 @@ int main(int argc, char ** argv){
         if (server(argc, argv) == 1){
 		printf("server in trouble\n");
 		exit(1);	
-	}
+        }
     }
     
     if (mode_flag == 1){
         if (client(argc, argv) == 1){
-		printf("server in trouble\n");
+		printf("client in trouble\n");
 		exit(1);	
-	}
+        }
     }
     
-    
+    exit(1);
 
 }
