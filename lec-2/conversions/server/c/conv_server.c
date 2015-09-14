@@ -1,9 +1,9 @@
 
 /**************************************************************************
  *  
- * Single threaded convertion server templete 
- *  It sends out a welcome message when receive connection from client.
- *  Compile: gcc -o conv_server conv_server.c to compile 
+ *  CS 6421 - Simple Conversation
+ *  	It sends out a welcome message when receive connection from client.
+ *  Compilation: gcc -o conv_server conv_server.c to compile 
  *  Execution: 
  * 	1. server: sudo ./conv_server -s -p portnum 
  * 	2. client: sudo ./conv_server -c -h server_ip -p portnum -v value 
