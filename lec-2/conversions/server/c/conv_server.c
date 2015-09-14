@@ -15,7 +15,7 @@
 static int buffer_size = 1024; 
 static char* server_port = "5555";
 static int mode_flag = 0; //0:server mode; 1: client mode 
-static char* msg = "welcome\n";
+static char* msg = "welcome, connected\n";
 
 
 /*
@@ -24,8 +24,9 @@ static char* msg = "welcome\n";
 static void
 usage(const char* progname) {
     printf("Usage: %s ", progname);
-    printf("	  	-m : 's' for run as server; 'c' for as client; default as server\n");
-    printf("       	-p : your port number\n");
+    printf("\n");
+    printf("  -m : 's' for run as server; 'c' for as client; default as server\n");
+    printf("  -p : your port number\n");
     printf("\n\n");
 }
 
@@ -60,6 +61,7 @@ parse_app_args(int argc, char* argv[]) {
         
         default:
         usage(progname);
+	exit(1);
     }
     return optind;
 }
@@ -70,16 +72,16 @@ parse_app_args(int argc, char* argv[]) {
  *If connection is established then send out welcome message
  */
 
-void processing(int sock){
-    
+void 
+processing(int sock)
+{
     int n;
     char buffer[buffer_size];
     bzero(buffer, buffer_size);
     
-    n = read(sock, buffer, buffer_size - 1);
+    n = read(sock, buffer, buffer_size);
     
-    if (n < 0)
-    {
+    if (n < 0){
         perror("ERROR reading from socket");
         exit(1);
     }
@@ -87,10 +89,9 @@ void processing(int sock){
     printf("Here is the message: %s\n",buffer);
     
     /* Write a response to the client */
-    n = write(sock, msg, sizeof(msg));
+    n = write(sock, msg, strlen(msg));
     
-    if (n < 0)
-    {
+    if (n < 0){
         perror("ERROR writing to socket");
         exit(1);
     }
@@ -102,7 +103,8 @@ void processing(int sock){
 
 
 
-int main( int argc, char **argv )
+int 
+main( int argc, char **argv )
 {
     int optval = 1;
     int sockfd, newsockfd;
@@ -120,8 +122,7 @@ int main( int argc, char **argv )
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof optval);
     
-    if (sockfd < 0)
-    {
+    if (sockfd < 0){
         perror("ERROR opening socket");
         exit(1);
     }
@@ -134,8 +135,7 @@ int main( int argc, char **argv )
     serv_addr.sin_port = htons(atoi(server_port));
     
     /* Now bind the host address using bind() call.*/
-    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0)
-    {
+    if (bind(sockfd, (struct sockaddr *) &serv_addr, sizeof(serv_addr)) < 0){
         perror("ERROR on binding");
         exit(1);
     }
@@ -149,8 +149,7 @@ int main( int argc, char **argv )
     
     /* Accept connection from the client */
     newsockfd = accept(sockfd, (struct sockaddr *)&cli_addr, &clilen);
-    if (newsockfd < 0)
-    {
+    if (newsockfd < 0){
         perror("ERROR on accept");
         exit(1);
     }
