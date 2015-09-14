@@ -13,6 +13,8 @@ cd dist-sys-exercises
 git pull origin master
 ```
 
+**Run your code on Koding.com** so that it will have a public hostname that everyone can connect to.
+
 ## Pick a Service. Write a Server.
 Each group must pick one of the services from the following list.  No duplicates can be picked until all services have been selected once. Alternatively, you can propose a new conversion, as long as one of its units is already included in the list below.
 
@@ -31,7 +33,6 @@ Each group must pick one of the services from the following list.  No duplicates
 ```
 
 To be consistent, we will use these abbreviations:
-The units should use the following abbreviations:
 
 Abbreviation | Unit
 ------|-----
@@ -46,9 +47,9 @@ b | bananas
 $ | dollars
 y | yen
 
-Your group must write a server which accepts requests to convert between the two units you have selected. It should be able to convert in either direction.  
+Your group must write a server that accepts requests to convert between the two units you have selected. It should be able to convert in either direction.  
 
-**You may choose to write your server in C, Python, or Java. I suggest Python or Java.** There are example server programs which can send a welcome message to the client and receive an input string. You should copy one of these to make your program.
+**You may choose to write your server in C, Python, or Java. I suggest Python or Java.** There are example server programs in the `templates/` directory which can send a welcome message to the client and receive an input string. You should copy one of these to make your program.
 
 #### Protocol Specification
 
