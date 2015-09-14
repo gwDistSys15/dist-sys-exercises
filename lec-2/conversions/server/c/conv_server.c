@@ -3,7 +3,7 @@
  *  Single threaded convertion server templete 
  *  It sends out a welcome message when receive connection from client.
  *  please use gcc -o conv_server conv_server.c to compile 
- *  please use sudo ./conv_server -p portnum to run
+ *  please use sudo ./conv_server -s -p portnum or sudo ./conv_server -c -h server_ip -p portnum -v value to run
  **************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
