@@ -114,6 +114,6 @@ Using these services, we will try to answer questions like:
   - How much would it cost in Japanese Yen for enough bananas to get 43 grams of potassium?
   - If I buy $56.34 worth of bananas and lay them end to end, how long will they be in centimeters?
 
-To do this, you will have to make a server that is capable of talking with other servers!  Try it out!
+To do this, you will have to make a server that is capable of talking with other servers! **Rather than edit your existing server, make a new one which can talk to it and another server.**  Coordinate with other students at your table to find IPs and service types you can use.
 
 What is the most interesting question you can answer using the servers written by groups at your table?  What if you talk with students from other tables?
