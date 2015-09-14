@@ -7,12 +7,17 @@
  **************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <unistd.h>
+#include <inttypes.h>
 #include <fcntl.h>
 #include <netdb.h>
 #include <netinet/in.h>
+#include <errno.h>
+#include <getopt.h>
 #include <string.h>
 #include <sys/socket.h>
+
 
 static int mode_flag = 0; //0:server mode; 1: client mode 
 
@@ -213,7 +218,7 @@ client(int argc, char ** argv)
         exit(-1);
     }
     
-    rc = send(sockfd, value, strlen(msg)+1, 0);
+    rc = send(sockfd, value, strlen(value)+1, 0);
     if(rc < 0) {
         perror("ERROR on send message");
         exit(-1);
@@ -246,11 +251,17 @@ int main(int argc, char ** argv){
     }
     
     if (mode_flag == 0){
-        server(argc, argv);
+        if (server(argc, argv) == 1){
+		printf("server in trouble\n");
+		exit(1);	
+	}
     }
     
     if (mode_flag == 1){
-        client(argc, argv);
+        if (client(argc, argv) == 1){
+		printf("server in trouble\n");
+		exit(1);	
+	}
     }
     
     
