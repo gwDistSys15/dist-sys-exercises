@@ -19,7 +19,7 @@
 #include <sys/socket.h>
 
 
-static int mode_flag = 0; //0:server mode; 1: client mode 
+int mode_flag = 0; //0:server mode; 1: client mode 
 
 static char* port;
 static char* msg = "welcome, connected\n";
@@ -35,7 +35,8 @@ static void
 usage(const char* progname) {
     printf("Usage: %s ", progname);
     printf("\n");
-    printf("  -m : 's' for run as server; 'c' for as client; default as server\n");
+    printf("  -s : 's' for run as server; default as server\n");
+    printf("  -c : 'c' for run as client; default as server\n");
     printf("  -p : your port number\n");
     //--TODO: add arguments explaination here 
     printf("  -h : your server ip address\n");
@@ -50,24 +51,23 @@ usage(const char* progname) {
 static int
 parse_app_args(int argc, char* argv[]) {
     const char* progname = argv[0];
-    const char* flag_server = "s";
-    const char* flag_client = "c";
-    int rc;
+    int r;
    
 
     opterr = 0;
     
-    while ((rc = getopt (argc, argv, "m:p:h:v:")) != -1)
-    switch (rc) {
-        case 'm':
-        if (optarg == flag_server) {
-            mode_flag = 0;
-        }
-        if (optarg == flag_client) {
-            mode_flag = 1;
-        }
+    while ((r = getopt (argc, argv, "scp:h:v:")) != -1)
+    switch (r) {
+        case 's':
+		// if the ar$igument is s, run server code
+		mode_flag = 0;
         break;
         
+	case 'c':
+		// if the argument is c, run client codd
+		mode_flag = 1;
+	break;
+
 	case 'p':
         port = optarg;
         break;
@@ -86,6 +86,7 @@ parse_app_args(int argc, char* argv[]) {
         usage(progname);
 	exit(1);
     }
+    printf("%d\n", mode_flag);
     return optind;
 }
 
@@ -122,7 +123,7 @@ processing(int sock)
 
 
 int 
-server( int argc, char **argv )
+server( void )
 {
     int optval = 1;
     int sockfd, newsockfd;
@@ -184,7 +185,7 @@ server( int argc, char **argv )
  */
 
 int
-client(int argc, char ** argv)
+client( void )
 {
     int rc;
     struct addrinfo hints, *server;
@@ -233,27 +234,27 @@ int main(int argc, char ** argv){
     const char* progname = argv[0];
     
     //--TODO: add arguments exception handling here
-    if (argc < 3){
-        usage(progname);
+    if (argc < 5){
         printf("Not enough command-line arguments\n");
+        usage(progname);
         exit(1);
     }
     
     if (parse_app_args(argc, argv) < 0){
-        usage(progname);
         printf("Invalid command-line arguments\n");
+        usage(progname);
         exit(1);
     }
     
     if (mode_flag == 0){
-        if (server(argc, argv) != 0){
+        if (server() != 0){
 		printf("server in trouble\n");
 		exit(1);	
         }
     }
     
     if (mode_flag == 1){
-        if (client(argc, argv) != 0){
+        if (client() != 0){
 		printf("client in trouble\n");
 		exit(1);	
         }
