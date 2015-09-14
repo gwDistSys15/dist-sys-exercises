@@ -116,6 +116,7 @@ main( int argc, char **argv )
     char buffer[256];
     struct sockaddr_in serv_addr, cli_addr;
     int  n;
+    const char* progname = argv[0];
     
     if (argc < 3){
     	usage(progname);
