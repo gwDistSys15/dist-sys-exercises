@@ -86,7 +86,6 @@ parse_app_args(int argc, char* argv[]) {
         usage(progname);
 	exit(1);
     }
-    printf("%d\n", mode_flag);
     return optind;
 }
 
