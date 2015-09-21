@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 
 public class SingleValueServer {
     
-    String value = "";
+    public static String value = "";
     
 
     public static void process (Socket clientSocket) throws IOException {
@@ -26,7 +26,7 @@ public class SingleValueServer {
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
         /* Write a welcome message to the client */
-        out.println("Welcome, you are connected to a Java-based server");
+        out.println("Welcome, you are connected to a Java-based SingleValueServer");
 
         /* read and print the client's request */
         // readLine() blocks until the server receives a new line from client
@@ -47,14 +47,14 @@ public class SingleValueServer {
         
         
         if(input.length != 2 && input.length > 0){
-            if(input[0].equals("get")) out.println(this.value);
+            if(input[0].equals("get")) out.println(value);
             else out.println("Sorry, we can't understand that command");
         } else {
             if(!input[0].equals("set") && !input[0].equals("get")){
                 out.println("Sorry, we can only accept set <value> or get <value>");
             } else {
                 if(input[0].equals("set")){
-                    this.value = input[1];
+                    value = input[1];
                     out.println("Value Saved!");
                 } else {
                     out.println("Sorry, we can only accept set <value> or get <value>");
