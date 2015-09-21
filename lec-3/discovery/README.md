@@ -49,7 +49,7 @@ All of the protocol designers from all teams will come together to discuss their
 
 **Second,** the two groups will come together and one person from each protocol group will present the protocol. At this point there may be further refinements based on feedback from the other designers.
 
-**Third,** the two groups will split up again, and formally write out a specification of their protocol. This should be saved into a file named `add-remove.md` or `lookup.md` stored in the `lec-3/discover/protocols/` directory.  This should be written into a fork of this repository.
+**Third,** the two groups will split up again, and formally write out a specification of their protocol. This should be saved into a file named `add-remove.md` or `lookup.md` stored in the `lec-3/discovery/protocols/` directory.  This should be written into a fork of this repository.
 
 Once you have finalized your protocol, you must create a Pull Request to have your protocol merged into the main repository.
 
