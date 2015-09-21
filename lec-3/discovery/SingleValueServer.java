@@ -57,7 +57,7 @@ public class SingleValueServer {
                     value = input[1];
                     out.println("Value Saved!");
                 } else {
-                    out.println("Sorry, we can only accept set <value> or get <value>");
+                    out.println("Sorry, we can only accept set <value> or get");
                 }
             }
         }
