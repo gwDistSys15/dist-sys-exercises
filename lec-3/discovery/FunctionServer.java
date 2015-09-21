@@ -15,7 +15,6 @@ import java.net.UnknownHostException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-
 public class FunctionServer {
 
     private static String set(String input){
@@ -47,10 +46,10 @@ public class FunctionServer {
         String tokens[] = userInput.toLowerCase().split(" ");
         switch(tokens[0]){
           case "set":
-            set(null);
+            out.println(set(null));
             break;
           case "get":
-            get(null);
+            out.println(get(null));
             break;
           default:
             out.println("Message not recognized : " + tokens[0]);
@@ -64,12 +63,34 @@ public class FunctionServer {
     }
 
     public static void main(String[] args) throws Exception {
-
+      
         //check if argument length is invalid
         if(args.length != 1) {
             System.err.println("Usage: java ConvServer port");
             System.exit(-1);
         }
+        
+        //TODO use command line args
+        String myIP = "161.253.119.173";
+        String discoveryServerIP = "127.0.0.1";
+        int discoveryServerPort = 1111;
+
+        Socket discSock;
+        PrintWriter discOut;
+        BufferedReader discIn;
+/* TODO uncomment this block
+        try{
+          discSock = new Socket(discoveryServerIP, discoveryServerPort);
+          discOut = new PrintWriter(discSock.getOutputStream(),true);
+          discIn = new BufferedReader(new InputStreamReader(discSock.getInputStream()));
+        }
+        catch(Exception e){
+          e.printStackTrace();
+          System.exit(-1);
+        }
+*/
+        //TODO send message to discovery server
+
         // create socket
         int port = Integer.parseInt(args[0]);
         ServerSocket serverSocket = new ServerSocket(port);
