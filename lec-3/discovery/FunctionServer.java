@@ -17,8 +17,15 @@ import java.io.InputStreamReader;
 
 
 public class FunctionServer {
-    static final boolean debug=true;
 
+    private static String set(String input){
+      return "set function called";
+    }
+
+    private static String get(String input){
+      return "get function called";
+    }
+    
     public static void process (Socket clientSocket) throws IOException {
         // open up IO streams
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -37,16 +44,17 @@ public class FunctionServer {
             clientSocket.close();
         }
 
-        String tokens[] = userInput.split(" ");
+        String tokens[] = userInput.toLowerCase().split(" ");
         switch(tokens[0]){
           case "set":
-            if(debug) System.out.println("Set function");
+            set(null);
             break;
           case "get":
-            if(debug) System.out.println("Get function");
+            get(null);
             break;
           default:
             out.println("Message not recognized : " + tokens[0]);
+            break;
         }
 
         // close IO streams, then socket
@@ -60,6 +68,7 @@ public class FunctionServer {
         //check if argument length is invalid
         if(args.length != 1) {
             System.err.println("Usage: java ConvServer port");
+            System.exit(-1);
         }
         // create socket
         int port = Integer.parseInt(args[0]);
