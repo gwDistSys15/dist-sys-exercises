@@ -13,11 +13,6 @@ import sys
 BUFFER_SIZE = 1024
 interface = ""
 
-printServerHost = "malcolmgoldiner@koding.io"
-printServerPort = 5555
-
-hostAddress = "timstamler@koding.io"
-
 ouncesDollarsHost = "malcolmgoldiner@koding.io"
 ouncesDollarsPort = 5555
 
@@ -87,22 +82,20 @@ def process(conn):
     conn.close()
 
 # if input arguments are wrong, print out usage
-if len(sys.argv) != 2:
-    print >> sys.stderr, "usage: python {0} portnum\n".format(sys.argv[0])
+if len(sys.argv) != 5:
+    print >> sys.stderr, "usage: python {0} hostAddress portnum discServHost discServPort\n".format(sys.argv[0])
     sys.exit(1)
 
-portnum = int(sys.argv[1])
+portnum = int(sys.argv[2])
 
-#get current host address
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
-s.connect(('google.com', 0)) 
-ip = s.getsockname()[0]
-s.close()
+#find discovery server
+discServerHost = sys.argv[3]
+discServerPort = int(sys.argv[4])
 
 #report information
 discServSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-discServSocket.connect((printServerHost, printServerPort))
-discServSocket.send(ip + " " + sys.argv[1] + "\n") #waiting on protocol
+discServSocket.connect((discServerHost, discServerPort))
+discServSocket.send(sys.argv[1] + " " + sys.argv[2] + "\n") #waiting on protocol
 discServSocket.close()
 
 # create socket
