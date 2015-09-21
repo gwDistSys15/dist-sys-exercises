@@ -51,7 +51,7 @@ public class SingleValueServer {
             else out.println("Sorry, we can't understand that command");
         } else {
             if(!input[0].equals("set") && !input[0].equals("get")){
-                out.println("Sorry, we can only accept set <value> or get <value>");
+                out.println("Sorry, we can only accept set <value> or get");
             } else {
                 if(input[0].equals("set")){
                     value = input[1];
