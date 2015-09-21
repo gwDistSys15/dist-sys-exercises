@@ -60,6 +60,8 @@ All protocol designers should return to their original tables to explain the pro
 ## Architecture Developers
 This will be done by students assigned a *Programmer* role.
 
+**Step 0:** As a first step, one of the students in your group should create a `fork` of this git repository ([read this if you need help]([https://help.github.com/articles/fork-a-repo/])).  You should then each clone the fork you have created and you should commit all of your changes to your fork as you work on the project.
+
 #### Phase 1: Architecture (15 minutes)
 Spend the first fifteen minutes discussing with the other programmers what language you will use and what your overall architecture is going to be.  Divide the design and implementation tasks up among the students in your group.
 
