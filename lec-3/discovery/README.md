@@ -1,6 +1,6 @@
 # Group Members
 
-- Engin Kayraklioglu(e-kayrakli) : engin@gwu.edu
+- Engin Kayraklioglu(e-kayrakli) : engin [at] gwu
 
 # Discovering Services
 From the conversion server exercise you should have discovered that coordinating services to work together can be quite difficult, especially if they are not all under your control.
