@@ -45,10 +45,10 @@ public class SingleValueServer {
         
         
         
-        
-        if(input.length != 2 && input.length > 0){
-            if(input[0].equals("get")) out.println(value);
-            else out.println("Sorry, we can't understand that command");
+        // this can't be the set command anymore
+        if(input.length < 2){
+            if(input.length == 1 && input[0].equals("get")) out.println(value); //if this is the get command
+            else out.println("Sorry, we can't understand that command"); // this can't be an acceptable command anymore
         } else {
             if(!input[0].equals("set") && !input[0].equals("get")){
                 out.println("Sorry, we can only accept set <value> or get");
@@ -86,6 +86,7 @@ public class SingleValueServer {
                 Socket clientSocket = serverSocket.accept();
                 System.err.println("\nAccepted connection from client");
                 process(clientSocket);
+                System.exit(0);
             }
 
         }catch (IOException e) {
