@@ -11,7 +11,7 @@ Your discovery service should be able to:
  4. Balance load across replicas of a conversion
  5. Handle server crashes gracefully
 
-**For classes on 9/21 and 9/27 we will focus only on the first three goals.**
+**For classes on 9/21 and 9/28 we will focus only on the first three goals.**
 
 ## Table tasks
 The students at your table should divide up into the following categories:
@@ -73,10 +73,10 @@ If you finish early, you can continue to the next phase.
 The protocol designers on your team will be discussing the exact protocol your system will use, but you should be able to begin developing the code framework that will run your system.
 
 Think about how you can build a set of prototypes that will help with this project.  Try to build each of these simple servers. Store them into different files and later you will combine them to build your overall system.
-  1. A server that calls different functions depending on whether a client sends a string where the first word is "set" or "get". Try to make this very flexible so it is easy to add different message types later (This is the most basic server prototype, and you should be able to reuse your old code)
-  2. A simple Print server that will display any messages that are sent to it.  (This will be useful for debugging/testing later on)
-  3. Modify your conversion server and proxy so that when they start they will send a message to the Print server described above. (This will mimic the behavior your servers will need later to contact the `discovery` server to announce what conversions they support)
-  4. A server that can store a single value. For example a client sending `set value1` would cause the server to save the string `value1` in memory.  Later, if a client sends the message `get`, the server should return `value1`. (This will help you figure out how to build a "stateful" server, i.e., one that stores data and can return it later)
+  1. `simple-serve` A server that calls different functions depending on whether a client sends a string where the first word is "set" or "get". Try to make this very flexible so it is easy to add different message types later (This is the most basic server prototype, and you should be able to reuse your old code)
+  2. `print-serve` A server that simply displays any messages that are sent to it.  (This will be useful for debugging/testing later on)
+  3. `store-serve` A server that can store a single value. For example a client sending `set value1` would cause the server to save the string `value1` in memory.  Later, if a client sends the message `get`, the server should return `value1`. (This will help you figure out how to build a "stateful" server, i.e., one that stores data and can return it later)
+  4. Finally, you should modify your conversion server and proxy so that when they start they will send a message to the Print server described above. (This will mimic the behavior your servers will need later to contact the `discovery` server to announce what conversions they support)
 
 Keep working on these types of servers and any other examples you can think of that could be useful until your protocol designers return.
 
