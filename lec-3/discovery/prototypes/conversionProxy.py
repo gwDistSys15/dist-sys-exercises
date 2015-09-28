@@ -19,9 +19,13 @@ ouncesDollarsPort = 5555
 dollarsYenHost = "timstamler@koding.io"
 dollarsYenPort = 6666
 
-inchesOuncesHost = "timstamler@koding.io"
-inchesOuncesPort = 7777
-
+def registerConversion(discServHost, discServPort, host, port):
+    #report information
+    discServSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    discServSocket.connect((discServerHost, discServerPort))
+    discServSocket.send(host + " " + port + "\n") #waiting on protocol
+    discServSocket.close()
+    
 def remoteConvert(host, port, args):
     clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     clientsocket.connect((host, port))
@@ -31,9 +35,7 @@ def remoteConvert(host, port, args):
     
     
 def convert(conn, unit, userInput):
-    if unit == "inches":
-        result = remoteConvert(inchesOuncesHost, inchesOuncesPort, ["inches", "ounces", userInput])
-        conn.send("Converted from inches to ounces: " + result + " ounces\n")
+    if unit == "ounces":
         result = remoteConvert(ouncesDollarsHost, ouncesDollarsPort, ["ounces", "dollars", result])
         conn.send("Converted from ounces to dollars: " + result + " dollars\n")
         return float(remoteConvert(dollarsYenHost, dollarsYenPort, ["dollars", "yen", result]))
@@ -41,13 +43,11 @@ def convert(conn, unit, userInput):
     elif unit == "yen":
         result = remoteConvert(dollarsYenHost, dollarsYenPort, ["yen", "dollars", userInput])
         conn.send("Converted from yen to dollars: " + result)
-        result = remoteConvert(ouncesDollarsHost, ouncesDollarsPort, ["dollars", "ounces", result])
-        conn.send("Converted from dollars to ounces: " + result)
-        return float(remoteConvert(inchesOuncesHost, inchesOuncesPort, ["ounces", "inches", result]))
+        return float(remoteConvert(ouncesDollarsHost, ouncesDollarsPort, ["dollars", "ounces", result]))
 
 ## Function to process requests
 def process(conn):
-    conn.send("Welcome to the inches of bananas/yen converter!\n")
+    conn.send("Welcome to the ounces of bananas/yen converter!\n")
 
     # read userInput from client
     userInput = conn.recv(BUFFER_SIZE)
@@ -62,12 +62,12 @@ def process(conn):
         conn.close()
         return
     
-    if inputList[0] == "inches" and inputList[1] != "yen":
+    if inputList[0] == "ounces" and inputList[1] != "yen":
         conn.send("Invalid input!\n")
         conn.close()
         return
         
-    if inputList[0] == "yen" and inputList[1] != "inches":
+    if inputList[0] == "yen" and inputList[1] != "ounces":
         conn.send("Invalid input!\n")
         conn.close()
         return
@@ -88,15 +88,7 @@ if len(sys.argv) != 5:
 
 portnum = int(sys.argv[2])
 
-#find discovery server
-discServerHost = sys.argv[3]
-discServerPort = int(sys.argv[4])
-
-#report information
-discServSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-discServSocket.connect((discServerHost, discServerPort))
-discServSocket.send(sys.argv[1] + " " + sys.argv[2] + "\n") #waiting on protocol
-discServSocket.close()
+registerConversion(sys.argv[3], int(sys.argv[4]), sys.argv[1], sys.argv[2])
 
 # create socket
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
