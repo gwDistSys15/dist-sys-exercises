@@ -73,6 +73,7 @@ public class SingleValueServer {
         //check if argument length is invalid
         if(args.length != 1) {
             System.err.println("Usage: java ConvServer port");
+            System.exit(0);
         }
         // create socket
         int port = Integer.parseInt(args[0]);
@@ -86,12 +87,12 @@ public class SingleValueServer {
                 Socket clientSocket = serverSocket.accept();
                 System.err.println("\nAccepted connection from client");
                 process(clientSocket);
-                System.exit(0);
+                //System.exit(0);
             }
 
         }catch (IOException e) {
             System.err.println("Connection Error");
         }
-        System.exit(0);
+       System.exit(0);
     }
 }
