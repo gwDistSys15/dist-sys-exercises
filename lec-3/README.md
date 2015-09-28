@@ -1,6 +1,6 @@
-Discovering Services Protocol:
+Discovering Services Prototypes:
 
-    add-remove protocol and lookup protocol
+    print-server, simple-server and store-serve
 
 Table Members:
 
