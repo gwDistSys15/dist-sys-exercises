@@ -14,15 +14,24 @@ import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class FunctionServer {
+
+    private static Hashtable<String, LinkedList<String>> convTable = 
+      new Hashtable<String, LinkedList<String>>();
+
+    private static Random r = new Random(System.currentTimeMillis());
 
     private static String set(String input){
       return "set function called with message " + input;
     }
 
     private static String get(String input){
-      return "get function called with message " + input;
+      LinkedList<String> servers = convTable.get(input);
+      return servers.get(r.nextInt(servers.size()));
     }
     
     public static void process (Socket clientSocket) throws IOException {
