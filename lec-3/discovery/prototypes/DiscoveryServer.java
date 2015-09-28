@@ -18,20 +18,34 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Random;
 
-public class FunctionServer {
+public class DiscoveryServer {
 
     private static Hashtable<String, LinkedList<String>> convTable = 
       new Hashtable<String, LinkedList<String>>();
 
     private static Random r = new Random(System.currentTimeMillis());
 
-    private static String set(String input){
-      return "set function called with message " + input;
+    private static boolean set(String unit1, String unit2, String ip, String port){
+      LinkedList<String> current = convTable.get(ip + " " + port);
+      if(current == null){
+        current = new LinkedList<String>();
+        convTable.put(unit1 + " " + unit2, current);
+        convTable.put(unit2 + " " + unit1, current);
+      }
+      else if(current.indexOf(ip + " " + port) != -1){
+        return false;
+      }
+      current.add(ip + " " + port);
+      
+      return true;
     }
 
-    private static String get(String input){
-      LinkedList<String> servers = convTable.get(input);
-      return servers.get(r.nextInt(servers.size()));
+    private static String get(String unit1, String unit2){
+      LinkedList<String> servers = convTable.get(unit1 + " " + unit2);
+      if(servers != null)
+        return servers.get(r.nextInt(servers.size()));
+      else
+        return "No registered servers";
     }
     
     public static void process (Socket clientSocket) throws IOException {
@@ -47,16 +61,23 @@ public class FunctionServer {
             clientSocket.close();
         }
 
-        String command = userInput.trim().toLowerCase().split(" ")[0];
-        switch(command){
-          case "set":
-            out.println(set(userInput.substring(command.length()+1)));
+        String tokens[] = userInput.trim().toLowerCase().split(" ");
+        switch(tokens[0]){
+          case "add":
+            if(tokens.length != 5){
+              out.println("Invalid add command. Usage: add unit1 unit2 ip port");
+              break;
+            }
+            if(set(tokens[1], tokens[2], tokens[3], tokens[4]))
+              out.println("SUCCESS");
+            else
+              out.println("FAILURE EXISTS");  
             break;
           case "get":
-            out.println(get(userInput.substring(command.length()+1)));
+            out.println(get(tokens[1], tokens[2]));
             break;
           default:
-            out.println("Message not recognized : " + command); 
+            out.println("Message not recognized : " + tokens[0]); 
             break;
         }
 
