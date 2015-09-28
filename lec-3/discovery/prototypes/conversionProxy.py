@@ -23,7 +23,16 @@ def registerConversion(discServHost, discServPort, host, port):
     #report information
     discServSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     discServSocket.connect((discServerHost, discServerPort))
-    discServSocket.send(host + " " + port + "\n") #waiting on protocol
+    discServSocket.send("ADD OUNCES YEN " host + " " + port + "\n") #waiting on protocol
+    print discServSocket.recv()
+    discServSocket.close()
+    
+def unregisterConversion(discServHost, discServPort, host, port):
+    #report information
+    discServSocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    discServSocket.connect((discServerHost, discServerPort))
+    discServSocket.send("REMOVE " + host + " " + port + "\n") #waiting on protocol
+    print discServSocket.recv()
     discServSocket.close()
     
 def remoteConvert(host, port, args):
@@ -95,9 +104,14 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.bind((interface, portnum))
 s.listen(5)
 
-while True:
+cmdInput = ""
+
+while cmdInput != "quit":
     # accept connection and print out info of client
     conn, addr = s.accept()
     print 'Accepted connection from client', addr
+    cmdInput = raw_input()
     process(conn)
+    
+unregisterConversion(sys.argv[3], int(sys.argv[4]), sys.argv[1], sys.argv[2])
 s.close()
