@@ -14,15 +14,24 @@ import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Hashtable;
+import java.util.LinkedList;
+import java.util.Random;
 
 public class FunctionServer {
 
+    private static Hashtable<String, LinkedList<String>> convTable = 
+      new Hashtable<String, LinkedList<String>>();
+
+    private static Random r = new Random(System.currentTimeMillis());
+
     private static String set(String input){
-      return "set function called";
+      return "set function called with message " + input;
     }
 
     private static String get(String input){
-      return "get function called";
+      LinkedList<String> servers = convTable.get(input);
+      return servers.get(r.nextInt(servers.size()));
     }
     
     public static void process (Socket clientSocket) throws IOException {
@@ -30,11 +39,6 @@ public class FunctionServer {
         BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-        /* Write a welcome message to the client */
-        //out.println("Welcome, you are connected to a Java-based server");
-
-        /* read and print the client's request */
-        // readLine() blocks until the server receives a new line from client
         String userInput;
         if ((userInput = in.readLine()) == null) {
             System.out.println("Error reading message");
@@ -43,16 +47,16 @@ public class FunctionServer {
             clientSocket.close();
         }
 
-        String tokens[] = userInput.toLowerCase().split(" ");
-        switch(tokens[0]){
+        String command = userInput.trim().toLowerCase().split(" ")[0];
+        switch(command){
           case "set":
-            out.println(set(null));
+            out.println(set(userInput.substring(command.length()+1)));
             break;
           case "get":
-            out.println(get(null));
+            out.println(get(userInput.substring(command.length()+1)));
             break;
           default:
-            out.println("Message not recognized : " + tokens[0]);
+            out.println("Message not recognized : " + command); 
             break;
         }
 
@@ -66,11 +70,11 @@ public class FunctionServer {
       
         //check if argument length is invalid
         if(args.length != 1) {
-            System.err.println("Usage: java ConvServer port");
+            System.err.println("Usage: java FunctionServer port");
             System.exit(-1);
         }
         
-        //TODO use command line args
+/* TODO uncomment this block
         String myIP = "161.253.119.173";
         String discoveryServerIP = "127.0.0.1";
         int discoveryServerPort = 1111;
@@ -78,7 +82,6 @@ public class FunctionServer {
         Socket discSock;
         PrintWriter discOut;
         BufferedReader discIn;
-/* TODO uncomment this block
         try{
           discSock = new Socket(discoveryServerIP, discoveryServerPort);
           discOut = new PrintWriter(discSock.getOutputStream(),true);
