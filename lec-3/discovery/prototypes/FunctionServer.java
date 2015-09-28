@@ -18,11 +18,11 @@ import java.io.InputStreamReader;
 public class FunctionServer {
 
     private static String set(String input){
-      return "set function called";
+      return "set function called with message " + input;
     }
 
     private static String get(String input){
-      return "get function called";
+      return "get function called with message " + input;
     }
     
     public static void process (Socket clientSocket) throws IOException {
@@ -38,16 +38,16 @@ public class FunctionServer {
             clientSocket.close();
         }
 
-        String tokens[] = userInput.toLowerCase().split(" ");
-        switch(tokens[0]){
+        String command = userInput.trim().toLowerCase().split(" ")[0];
+        switch(command){
           case "set":
-            out.println(set(null));
+            out.println(set(userInput.substring(command.length()+1)));
             break;
           case "get":
-            out.println(get(null));
+            out.println(get(userInput.substring(command.length()+1)));
             break;
           default:
-            out.println("Message not recognized : " + tokens[0]);
+            out.println("Message not recognized : " + command); 
             break;
         }
 
