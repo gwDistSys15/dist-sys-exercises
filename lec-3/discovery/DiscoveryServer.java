@@ -80,9 +80,17 @@ public class DiscoveryServer {
             String unit1 = a[1];
             String unit2 = a[2];
             String key1 = a[1] + "-" + a[2];
+            String key2 = a[2] + "-" + a[1];
             if(table.containsKey(key1))
             {
                 String str = table.get(key1);
+                String ss[] = str.split("-");
+                out.println(ss[0] + " " + ss[1]);
+                System.out.println("success lookup " + ss[0] + " " + ss[1]);
+            }
+            else if(table.containsKey(key2))
+            {
+                String str = table.get(key2);
                 String ss[] = str.split("-");
                 out.println(ss[0] + " " + ss[1]);
                 System.out.println("success lookup " + ss[0] + " " + ss[1]);
