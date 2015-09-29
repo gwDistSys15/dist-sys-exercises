@@ -1,11 +1,10 @@
 # Add and Remove Protocol
 
-As we disscussed in the other room,
-add command should look like this: 
+add command: 
 ```
-add <unit_src> <unit_des> <IP> <port>\n
+add <unit_1> <unit_2> <IP> <port>\n
 ```
-whereas remove command looks like this:
+whereas remove command is:
 ```
 remove <IP> <port>\n
 ```
