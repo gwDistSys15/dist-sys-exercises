@@ -63,31 +63,52 @@ commands = { "add" : cmd_add,
              "lookup" : cmd_lookup,
              }
 
+
+# The standard recv function is not neccessarily line-delimited.
+def recv_lines(conn):
+    buf = conn.recv(BUFFER_SIZE).decode('UTF-8')
+    end_newline = (buf[-1] == '\n')
+    lines = buf.split('\n')
+    if not conn in recv_lines.keep_line:
+        recv_lines.keep_line[conn] = ''
+    for l in lines[0:1]:
+        yield recv_lines.keep_line[conn] + lines[0]
+    recv_lines.keep_line[conn] = {}
+    for l in lines[1:-1]:
+        yield l
+    if end_newline:
+        yield lines[-1]
+    else:
+        recv_lines.keep_line[conn] = lines[-1]
+recv_lines.keep_line = {}
+
+
 def process(conn):
     greeting = "Welcome, you are connected to a Python-based simple command server.\n"
     conn.sendall(greeting.encode('UTF-8'))
-    userInput = conn.recv(BUFFER_SIZE).decode('UTF-8')
 
-    if not userInput:
-        print("Error reading message")
-        return
+    for userInput in recv_lines(conn):
+        if not userInput:
+            print("Error reading message")
+            return
 
-    sys.stdout.write("Received message: %s" % userInput)
-    tokens = userInput.lower().split()
+        sys.stdout.write("Received message: %s" % userInput)
+        tokens = userInput.lower().split()
 
-    try:
-        if tokens[0] in commands:
-            print("Processing command")
-            response = commands[tokens[0]](tokens)
-        else:
-            response = ("Invalid command: %s\n" % tokens[0])
+        try:
+            if tokens[0] in commands:
+                print("Processing command")
+                response = commands[tokens[0]](tokens)
+            else:
+                response = ("Invalid command: %s\n" % tokens[0])
 
-        sys.stdout.write("Sending response: %s" % response)
-        conn.sendall(response.encode('UTF-8'))
-    except:
-        traceback.print_exc(file=sys.stdout)
-        msg = ("Exception occurred: %s\n" % (userInput))
-        conn.sendall(msg.encode('UTF-8'))
+            sys.stdout.write("Sending response: %s" % response)
+            conn.sendall(response.encode('UTF-8'))
+        except:
+            traceback.print_exc(file=sys.stdout)
+            msg = ("Exception occurred: %s\n" % (userInput))
+            conn.sendall(msg.encode('UTF-8'))
+
     return
 
 
@@ -113,6 +134,7 @@ if __name__ == '__main__':
             except:
                 traceback.print_exc(file=sys.stdout)
                 print ('Failed to process request from client. Continuing.')
+            print('Closing connection.')
             conn.close()
     except KeyboardInterrupt:
         exit_flag = True
