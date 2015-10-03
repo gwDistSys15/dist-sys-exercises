@@ -66,20 +66,22 @@ commands = { "add" : cmd_add,
 
 # The standard recv function is not neccessarily line-delimited.
 def recv_lines(conn):
-    buf = conn.recv(BUFFER_SIZE).decode('UTF-8')
-    end_newline = (buf[-1] == '\n')
-    lines = buf.split('\n')
     if not conn in recv_lines.keep_line:
         recv_lines.keep_line[conn] = ''
-    for l in lines[0:1]:
-        yield recv_lines.keep_line[conn] + lines[0]
-    recv_lines.keep_line[conn] = {}
-    for l in lines[1:-1]:
-        yield l
-    if end_newline:
-        yield lines[-1]
-    else:
-        recv_lines.keep_line[conn] = lines[-1]
+    lines_recieved = 0
+    while lines_recieved == 0:
+        buf = conn.recv(BUFFER_SIZE).decode('UTF-8')
+        print("conn.recv buf: %s" % buf)
+        if not buf:
+            yield None
+        lines = buf.splitlines(True)
+        for l in lines:
+            if l.endswith('\n'):
+                yield recv_lines.keep_line[conn] + l
+                recv_lines.keep_line[conn] = ''
+                lines_recieved = 1
+            else:
+                recv_lines.keep_line[conn] += lines[-1]
 recv_lines.keep_line = {}
 
 
@@ -92,12 +94,16 @@ def process(conn):
             print("Error reading message")
             return
 
-        sys.stdout.write("Received message: %s" % userInput)
+        sys.stdout.write("Received message: %s\n" % userInput)
         tokens = userInput.lower().split()
+
+        if not tokens:
+            # Empty line received
+            continue
 
         try:
             if tokens[0] in commands:
-                print("Processing command")
+                print("Processing command.")
                 response = commands[tokens[0]](tokens)
             else:
                 response = ("Invalid command: %s\n" % tokens[0])
