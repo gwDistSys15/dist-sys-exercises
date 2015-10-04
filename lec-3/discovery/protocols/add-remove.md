@@ -1,15 +1,16 @@
-# Add and Remove Protocol
-Add:
+ADD UNIT1 UNIT2 IP_ADDRESS PORT_NO\n
 
-    convertion server -> discovery server: "conv:a:unit_1 unit_2:host port"
-    discovery server -> proxy server: "discov:updt_t_a:unit_1 unit_2"
-    
-    proxy server -> discovery server: "proxy:a:host port"
-    
-Remove:
+Response:
+SUCCESS\n
+FAILURE [REASON]\n -> FAILURE\n
+Ex:
+FAILURE EXISTS
 
-    convertion server -> discovery server: "conv:r:unit_1 unit_2"
-    discovery server -> proxy server: "discov:updt_t_r:unit_1 unit_2"
-    
-    proxy server -> discovery server: "proxy:r"
+REMOVE IP_ADDRESS PORT_NO\n
+Remove all entries with IP:PORT
+
+Response:
+SUCCESS\n
+FAILURE [REASON]\n -> FAILURE\n
+
 
