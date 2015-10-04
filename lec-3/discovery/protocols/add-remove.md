@@ -1,16 +1,10 @@
-ADD UNIT1 UNIT2 IP_ADDRESS PORT_NO\n
+# Add and Remove Protocol
 
-Response:
-SUCCESS\n
-FAILURE [REASON]\n -> FAILURE\n
-Ex:
-FAILURE EXISTS
-
-REMOVE IP_ADDRESS PORT_NO\n
-Remove all entries with IP:PORT
-
-Response:
-SUCCESS\n
-FAILURE [REASON]\n -> FAILURE\n
-
-
+add command: 
+```
+add <unit_1> <unit_2> <IP> <port>\n
+```
+whereas remove command is:
+```
+remove <IP> <port>\n
+```

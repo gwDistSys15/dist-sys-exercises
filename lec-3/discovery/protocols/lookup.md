@@ -1,7 +1,17 @@
-LOOKUP UNIT1 UNIT2\n
-Response:
-in case of Success:
-IP_ADDRESS PORT_NO\n
+# Lookup Protocol
 
--> none\n
-FAILURE
+For request:
+```
+Lookup <unit_src> <unit_dest>
+```
+should receive response in this format:
+if successful:
+```
+IP_ADDRESS PORT\n
+```
+if nothing was found:
+```
+"none"\n
+```
+
+    
