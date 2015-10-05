@@ -3,7 +3,8 @@
 This is the HW 4 submission for Ahsen Uppal and Luona Guo, Zhenyu Han, Zuocheng Ding, Qi Liu, Yi Zhou.
 This shows an example of a Python-based discovery conversion server
 that supports add, remove, and lookup. For extra credit, this
-discovery server includes path-finding.
+discovery server includes path-finding. And the proxy_conv_server.py
+supports querying and using this protocol for path conversions.
 
 For path-finding, it builds an internal graph representation of the
 conversion server network, and processes conversion requests by doing
@@ -105,7 +106,11 @@ python2 discovery.py 5555
 ```
 
 Then you can add conversion servers to it. Multi-line messages are
-supported! I have created several input files for ease of use.
+supported! I have created several input files for ease of use. You can
+of course, type each line from the input test files separately in
+telnet or nc.
+
+
 Example:
 ```
 >cat input-02.txt                      
@@ -157,3 +162,10 @@ Query kg lbs to server at localhost 5584
 
 The Query strings are the responses are the responses to the path
 command.
+
+# Test cases
+Briefly, input-00.txt verifies basic add, remove, and lookup
+capabilities. Including for duplicate entries. In input-01.txt we
+verify that syntax errors are properly handled. And input-02.txt
+verifies multi-path queriues.
+
