@@ -140,7 +140,7 @@ public class DiscovServer {
             System.err.println("Usage: java ConvServer port");
         }
         // create socket
-        int port = 3399;
+        int port = Integer.parseInt(args[0]);
         ServerSocket serverSocket = new ServerSocket(port);
         System.err.println("Started server on port " + port);
         
