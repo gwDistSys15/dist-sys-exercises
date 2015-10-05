@@ -14,30 +14,42 @@ BUFFER_SIZE = 1024
 # Key-Value store
 values = {}
 
-def cmd_get(tokens):
-    if len(tokens) > 1:
-        return 'Invalid command: Only single value get supported.\n'
-    elif not 'single' in values:
-        return 'Error: single value not set.\n'
-    return values['single']
+def cmd_add(tokens):
+    if len(tokens) > 5:
+        return 'Protocol:ADD UNIT1 UNIT2 IP_ADDRESS PORT_NO.\n'
+    elif tokens[1]+tokens[2] in values or tokens[2]+tokens[1] in values:
+        return 'FAILURE exists.\n'
+    values[tokens[1]+tokens[2]] = tokens[3]+' '+tokens[4];
+    return ('SUCCESS\n')
 
-def cmd_set(tokens):
-    if len(tokens) != 5:
-        print "set unit1 unit2 ip port\n"
-        res = "set unit1 unit2 ip port\n"
-        return res;
-        
-        convUnit = tokens[1].strip('\r') + ":" + tokens[2].strip('\r')
-        ipPort = tokens[3].strip('\r') + ":" + tokens[4].strip('\r')
-        serverList.update({convUnit:ipPort})
-        print serverList
-        res = "set done"
-        
-        return res
-
-commands = { "lookup" : cmd_get,
-             "addr" : cmd_set,
+def cmd_remove(tokens):
+    remove = 0;
+    if len(tokens) > 3:
+        return 'Protocol: REMOVE IP_ADDRESS PORT_NO.\n'
+    for key in values.keys():
+        if values[key] == tokens[1]+' '+tokens[2]:
+            values.pop(key);
+            remove = 1;
+    if remove == 0:
+        return 'FAILURE IP_ADDR and port not found.\n'
+    return ('SUCCESS\n')
+    
+def cmd_lookup(tokens):
+    if len(tokens) > 3:
+        return 'Protocol: LOOKUP UNIT1 UNIT2.\n'
+    elif values is None:
+        return 'Error: LOOKUP table is empty.\n'
+    if tokens[1]+tokens[2] in values:
+        return values[tokens[1]+tokens[2]]+'\n'
+    elif tokens[2]+tokens[1] in values:
+        return values[tokens[2]+tokens[1]]+'\n'
+    else:
+        return 'Error: can not accomplish this convertion.'
+     
+    
+commands = { "add" : cmd_add,
              "remove" : cmd_remove,
+             "lookup" : cmd_lookup,
              }
 
 def process(conn):
@@ -50,7 +62,7 @@ def process(conn):
         return
 
     sys.stdout.write("Received message: %s" % userInput)
-    tokens = userInput.split(' ')
+    tokens = userInput.split()
 
     try:
         if tokens[0] in commands:
@@ -69,12 +81,7 @@ def process(conn):
 
 if __name__ == '__main__':
     interface = ""
-    
-    class HashTable:
-        def __init__(serverList):
-            serverList.size = 20
-    ##########################################
-    
+
     if len(sys.argv) < 2:
         sys.stderr.write("usage: python {0} portnum\n".format(sys.argv[0]))
         sys.exit(1)
@@ -84,7 +91,6 @@ if __name__ == '__main__':
     s.bind((interface, portnum))
     s.listen(5)
     exit_flag = False
-    
     try:
         print("Started Python-based command server on port %s" % (portnum))
         while not exit_flag:
@@ -92,6 +98,8 @@ if __name__ == '__main__':
             print ('Accepted connection from client ', addr)
             try:
                 process(conn)
+                for key in values:
+                    print key, ':', values[key]
             except:
                 traceback.print_exc(file=sys.stdout)
                 print ('Failed to process request from client. Continuing.')
