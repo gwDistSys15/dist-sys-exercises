@@ -24,7 +24,8 @@ TCP port. In our testing we used port 5555.
 ```
 add unit_src unit_dst conversion-host conversion-port\n
 ```
-This adds a source and destination unit to the discovery server.
+This adds a source and destination unit to the discovery
+server. Responds with a success or failure as indicated below.
 
 ## Add Response
 ```
@@ -39,7 +40,7 @@ Failure\n
 ```
 remove host port\n
 ```
-This removes a previously added conversion server.
+This removes a previously added conversion server. Responds with a success or failure as indicated below.
 
 ## Remove Response
 ```
@@ -58,7 +59,7 @@ lookup unit1 unit2\n'
 
 This queries the discovery server for a single source and destination
 unit pair and returns the host and port associated with it.
-Response: `host port\n` or `Failure\n`
+Responds with a success or failure as indicated below.
 
 
 ## Lookup Response
