@@ -169,3 +169,8 @@ capabilities. Including for duplicate entries. In input-01.txt we
 verify that syntax errors are properly handled. And input-02.txt
 verifies multi-path queriues.
 
+# Other notes
+We discovered that the recv socket call may return less data than has
+actually been sent by the remote side. So in the discovery server, we
+handle this case with a recv_lines function. This has the added
+benefit of supporting multi-line commands.
