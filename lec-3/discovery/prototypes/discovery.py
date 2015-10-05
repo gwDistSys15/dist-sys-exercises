@@ -5,6 +5,10 @@
 # CS 6421 - Simple Python based discovery server, including path find.
 # Uses a dictionary dispatch table to process simple get
 # and set commands.
+# 
+# For path-finding, it builds an internal graph representation of the
+# conversion server network, and processes conversion requests by
+# doing a shortest-path traversal through the conversion network.
 #
 
 import socket, sys
@@ -27,7 +31,6 @@ def cmd_add(tokens):
         return 'Failure entry exists.\n'
     unit_to_server[(u1,u2)][(host,port)] = 1
     server_to_unit[(host,port)] = (u1,u2)
-    print (unit_to_server)
     return 'Success\n'
 
 def cmd_remove(tokens):
@@ -43,9 +46,6 @@ def cmd_remove(tokens):
 
     if len(unit_to_server[(u1,u2)]) == 0:
            del unit_to_server[(u1,u2)]
-
-    print(unit_to_server)
-    print(server_to_unit)
     return 'Success\n'
 
 
@@ -132,6 +132,13 @@ def cmd_path(tokens):
     if len(tokens) != 3:
         return 'Failure invalid command. Expected: path u1 u2.\n'
     u1,u2 = tokens[1:]
+
+    if u1 not in unit_to_id:
+        return 'Failure invalid unit1\n'
+
+    if u2 not in unit_to_id:
+        return 'Failure invalid unit2\n'
+
     p = get_path(u1, u2)
 
     if not p:
@@ -225,7 +232,7 @@ if __name__ == '__main__':
     s.listen(5)
     exit_flag = False
     try:
-        print("Started Python-based command server on port %s" % (portnum))
+        print("Started Python-based discovery command server on port %s" % (portnum))
         while not exit_flag:
             conn, addr = s.accept()
             print ('Accepted connection from client ', addr)
