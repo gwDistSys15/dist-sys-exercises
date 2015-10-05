@@ -14,10 +14,12 @@ import java.io.PrintWriter;
 import java.net.UnknownHostException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class SingleValueServer {
     
-    public static String value = "";
+    public static Hashtable<String,ArrayList<String>> value = new Hashtable<String,ArrayList<String>>(); 
     
 
     public static void process (Socket clientSocket) throws IOException {
@@ -39,29 +41,32 @@ public class SingleValueServer {
         }
 
         System.out.println("Received message: " + userInput);
-        //--TODO: add your converting functions here, msg = func(userInput);
         
         String[] input = userInput.split(" ");
         
+        // set unit1 unit2 IP Port 
+        
+        // key is unit1 unit 2
+        //value is IP PORT 
         
         
-        // this can't be the set command anymore
-        if(input.length < 2){
-            if(input.length == 1 && input[0].equals("get")) out.println(value); //if this is the get command
-            else out.println("Sorry, we can't understand that command"); // this can't be an acceptable command anymore
-        } else {
-            if(!input[0].equals("set") && !input[0].equals("get")){
-                out.println("Sorry, we can only accept set <value> or get");
-            } else {
-                if(input[0].equals("set")){
-                    value = input[1];
-                    out.println("Value Saved!");
-                } else {
-                    out.println("Sorry, we can only accept set <value> or get");
-                }
-            }
+        if(input.length == 5){
+        	ArrayList<String> current = value.get(input[1] + " " + input[2]);
+        	
+        	if(current == null) current = new ArrayList<String>(); 
+        	
+        	current.add(input[3] + " " + input[4]);
+        	
+        	value.put(input[1] + " " + input[2], current);
+        	
+        	value.put(input[2] + " " + input[1], current);
+        	
+        	System.out.println("Discovery Table is now: " + value.toString());
+        	
         }
-
+        
+        
+      
         // close IO streams, then socket
         out.close();
         in.close();
@@ -72,7 +77,8 @@ public class SingleValueServer {
 
         //check if argument length is invalid
         if(args.length != 1) {
-            System.err.println("Usage: java ConvServer port");
+            System.err.println("Usage: java SingleValueServer port");
+            System.exit(0);
         }
         // create socket
         int port = Integer.parseInt(args[0]);
@@ -86,12 +92,11 @@ public class SingleValueServer {
                 Socket clientSocket = serverSocket.accept();
                 System.err.println("\nAccepted connection from client");
                 process(clientSocket);
-                System.exit(0);
             }
 
         }catch (IOException e) {
             System.err.println("Connection Error");
         }
-        System.exit(0);
+       System.exit(0);
     }
 }
