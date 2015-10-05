@@ -16,8 +16,27 @@ import java.net.UnknownHostException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.Double;
+import java.net.InetAddress; 
 
 public class ConvServer_b_g {
+    static String DISCOV_IP = "127.0.0.1";
+    static int DISCOV_PORT = 5555;
+    static String l_ip;
+    static int l_port;
+    
+    public static void send_to_discov(String msg){
+        Socket sock = null;
+        try {
+            sock = new Socket(DISCOV_IP, DISCOV_PORT);    //get the socket and connet to the server
+            PrintWriter out = new PrintWriter(sock.getOutputStream(), true);    //get printer
+            out.println(msg);   //send messages
+            out.close();
+            sock.close();
+        } catch(Exception e) {
+            System.out.println("ERROR:"+e);
+            System.exit(-1); 
+        }
+    }
 
     public static void process (Socket clientSocket) throws IOException {
         // open up IO streams
@@ -80,8 +99,21 @@ public class ConvServer_b_g {
         return n / 0.472f;
     }
 
+    /*
+    * hook thread
+    */
+    static class CleanWorkThread extends Thread{
+        @Override
+        public void run() {
+            System.err.println("exiting..");
+            send_to_discov("remove " + ConvServer_b_g.l_ip + " " + ConvServer_b_g.l_port);
+        }
+    }
+
     public static void main(String[] args) throws Exception {
 
+        Runtime.getRuntime().addShutdownHook(new CleanWorkThread());
+        
         //check if argument length is invalid
         if(args.length != 1) {
             System.err.println("Usage: java ConvServer port");
@@ -91,6 +123,11 @@ public class ConvServer_b_g {
         ServerSocket serverSocket = new ServerSocket(port);
         System.err.println("Started server on port " + port);
 
+        // get local ip
+        InetAddress addr = InetAddress.getLocalHost();
+        l_ip = addr.getHostAddress();
+        l_port = port;
+        send_to_discov("add b g " + l_ip + " " + l_port);
         // wait for connections, and process
         try {
             while(true) {
@@ -100,8 +137,8 @@ public class ConvServer_b_g {
                 process(clientSocket);
             }
 
-        }catch (IOException e) {
-            System.err.println("Connection Error");
+        }catch (Exception e) {
+            System.out.println("ERROR:"+e);
         }
         System.exit(0);
     }
