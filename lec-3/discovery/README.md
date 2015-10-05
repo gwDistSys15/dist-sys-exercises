@@ -27,19 +27,67 @@ add unit_src unit_dst conversion-host conversion-port\n
 This adds a source and destination unit to the discovery server.
 
 ```
-Response: `Success\n` or `Failure\n`
+
+## Add Response
+```
+Success\n
+```
+or
+```
+Failure\n
+```
 
 ## Remove
 ```
 remove host port\n
 ```
 This removes a previously added conversion server.
-Response: `Success\n` or `Failure\n`
+
+## Remove Response
+```
+Success\n
+```
+or
+```
+Failure\n
+```
+
 
 # Lookup
 ```
 lookup unit1 unit2\n'
 ```
+
 This queries the discovery server for a single source and destination
 unit pair and returns the host and port associated with it.
 Response: `host port\n` or `Failure\n`
+
+
+## Lookup Response
+```
+host port\n
+```
+or
+```
+Failure\n
+```
+
+# Path finding
+```
+path unit1 unit2\n'
+```
+
+This queries the discovery server for a conversion path between the source and destination
+unit pair and returns the list of hosts and ports along that path.
+
+
+## Path Response
+```
+host1 port1\n
+host2 port2\n
+...
+```
+or
+```
+Failure\n
+```
