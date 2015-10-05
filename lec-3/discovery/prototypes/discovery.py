@@ -2,8 +2,8 @@
 
 # Ahsen Uppal
 #
-# CS 6421 - Simple Python based single value store server.
-# Uses a dictionary dispatch table to process simple single value get
+# CS 6421 - Simple Python based discovery server, including path find.
+# Uses a dictionary dispatch table to process simple get
 # and set commands.
 #
 
@@ -14,7 +14,8 @@ from collections import defaultdict
 
 BUFFER_SIZE = 1024
 
-# Key-Value store
+# Key-Value stores
+# Tricky data structure for unit_to_server, a dict of dicts
 unit_to_server = defaultdict(dict)
 server_to_unit = {}
 
@@ -45,7 +46,6 @@ def cmd_remove(tokens):
 
     print(unit_to_server)
     print(server_to_unit)
-
     return 'Success\n'
 
 
@@ -142,14 +142,14 @@ def cmd_path(tokens):
         for i in p:
             v = i
             s,d = id_to_unit[u],id_to_unit[v]
+            # Tricky dereference: lookup in a dictionary, get a dictionary, get the first entry, and its key.
             host,port = unit_to_server[(s,d)].items()[0][0]
             msg += ('Query %s %s to server at %s %s\n' % (s, d, host, port))
             u = v
     return msg
 
 
-
-
+# Dict for command dispatch.
 commands = { "add" : cmd_add,
              "remove" : cmd_remove,
              "lookup" : cmd_lookup,
@@ -178,6 +178,7 @@ def recv_lines(conn):
 recv_lines.keep_line = {}
 
 
+# Main processing function for a single connection
 def process(conn):
     greeting = "Welcome, you are connected to a Python-based simple command server.\n"
     conn.sendall(greeting.encode('UTF-8'))
