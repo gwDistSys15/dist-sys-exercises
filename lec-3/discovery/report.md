@@ -28,7 +28,8 @@ TCP port. In our testing we used port 5555.
 add unit_src unit_dst conversion-host conversion-port\n
 ```
 This adds a source and destination unit to the discovery
-server. Responds with a success or failure as indicated below.
+server. Responds with a success or failure with an optional reason as
+indicated below.
 
 ## Add Response
 ```
@@ -36,14 +37,15 @@ Success\n
 ```
 or
 ```
-Failure\n
+Failure [reason]\n
 ```
 
 ## Remove
 ```
 remove host port\n
 ```
-This removes a previously added conversion server. Responds with a success or failure as indicated below.
+This removes a previously added conversion server. Responds with a
+success or failure with an optional reason as indicated below.
 
 ## Remove Response
 ```
@@ -51,7 +53,7 @@ Success\n
 ```
 or
 ```
-Failure\n
+Failure [reason]\n
 ```
 
 
@@ -62,7 +64,8 @@ lookup unit1 unit2\n
 
 This queries the discovery server for a single source and destination
 unit pair and returns the host and port associated with it.
-Responds with a success (host port or "None." for not found) or failure as indicated below.
+Responds with a success (host port or "None." for not found) or
+failure with an optional reason as indicated below.
 
 
 ## Lookup Response
@@ -75,7 +78,7 @@ None.\n
 ```
 or
 ```
-Failure\n
+Failure [reason]\n
 ```
 
 # Path finding
@@ -84,7 +87,8 @@ path unit1 unit2\n
 ```
 
 This queries the discovery server for a conversion path between the source and destination
-unit pair and returns the list of hosts and ports along that path.
+unit pair and returns the list of hosts and ports along that path. It
+returns failure with an optional reason for failure.
 
 
 ## Path Response
@@ -96,7 +100,7 @@ Query u3a u3b to server at host3 port3
 ```
 or
 ```
-Failure\n
+Failure [reason]\n
 ```
 Where u1a u1b is the first unit pair to query, u2a u2b is the second
 and so on.
