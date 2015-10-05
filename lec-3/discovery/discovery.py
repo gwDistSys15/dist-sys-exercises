@@ -23,6 +23,7 @@ BUFFER_SIZE = 1024
 unit_to_server = defaultdict(dict)
 server_to_unit = {}
 
+# Process an add conversion server command
 def cmd_add(tokens):
     if len(tokens) != 5:
         return 'Failure invalid command. Expected: add u1 u2 host port.\n'
@@ -33,6 +34,7 @@ def cmd_add(tokens):
     server_to_unit[(host,port)] = (u1,u2)
     return 'Success\n'
 
+# Process a remove conversion server command
 def cmd_remove(tokens):
     if len(tokens) != 3:
         return 'Failure invalid command. Expected: remove host port.\n'
@@ -49,7 +51,7 @@ def cmd_remove(tokens):
     return 'Success\n'
 
 
-# Look up a a single conversion server from u1 to u2
+# Process a lookup a a single conversion server from u1 to u2
 def cmd_lookup(tokens):
     if len(tokens) != 3:
         return 'Failure invalid command. Expected: lookup u1 u2.\n'
@@ -127,7 +129,7 @@ def get_path(src, dst):
     return path
 
 
-# Look up a path from u1 to u2
+# Process a lookup path from u1 to u2 command
 def cmd_path(tokens):
     if len(tokens) != 3:
         return 'Failure invalid command. Expected: path u1 u2.\n'
