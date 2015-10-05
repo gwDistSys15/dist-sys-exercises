@@ -134,7 +134,7 @@ add lbs g localhost 5586
 add g lbs localhost 5587
 path ft lbs
 
->nc localhost 7001 < input-02.txt
+>nc localhost 5555 < input-02.txt
 Welcome, you are connected to a Python-based simple command server.
 Success
 Success
