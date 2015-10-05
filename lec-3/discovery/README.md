@@ -1,5 +1,6 @@
 # Group Members
 
+- Tim Stamler - timstamler@gwu.edu
 - Engin Kayraklioglu(e-kayrakli) : engin [at] gwu
 - Malcolm - mgoldiner@gwu.edu
 
