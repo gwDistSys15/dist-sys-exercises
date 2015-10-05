@@ -2,20 +2,23 @@
  *
  *  CS 6421 - Discovery Server
  *  implement a discoverty server store adresses information
- *  Compilation:  javac DiscovServer.java
- *  Execution:    java DiscovServer
- *
- *  % java DiscovServer portnum
+ * 
  ******************************************************************************/
+
+package com.discovery.server;
 
 import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class DiscovServer {
-    static HashMap<String, String> discovTable  = new HashMap<String, String>();
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
+public class DiscovServer {
+    static Multimap<String, String> discovTable = ArrayListMultimap.create();
+ 
     public static void add(String[] msg, PrintWriter out){
+    	//check if msg valuse is invalid
         if (msg.length != 5){
             System.out.println("Error input");
             out.println("Error input");
@@ -25,44 +28,61 @@ public class DiscovServer {
         
         String key = msg[1] + " " + msg[2];
         String value = msg[3] + " " + msg[4];
-        discovTable.put(key, value);
-        System.out.println("Add successfully!");
-        out.println("Add successfully!");
-        return;
+        Collection<String> values = discovTable.get(key);
+        //check if the ip and port has already exist
+        if(values.contains(value)){
+        	out.println("This ip and port has already exist!");
+        	System.out.println("This ip and port has already exist!");
+        	return;
+        }else{
+        	//add this path to discovery table
+	        discovTable.put(key, value);
+	        System.out.println("Add successfully!");
+	        out.println("Add successfully!");
+	        return;
+        }
     }
     
     public static void remove(String[] msg, PrintWriter out){
+    	//check if msg values is invalid
         if (msg.length != 3){
             System.out.println("Error input");
             out.println("Error input");
-            out.println("Please input in format of <remove unit1 unit2>");
+            out.println("Please input in format of <remove unit3 unit4>");
             return;
         }
-        
-        String key = msg[1] + " " + msg[2];
-        discovTable.remove(key);
-        System.out.println("Remove successfully!");
-        out.println("Remove successfully!");
-        return;
+        String values = msg[1] + " " + msg[2];
+        //check if the ip and port exist in the discovery table
+        if(!discovTable.values().contains(values)){
+        	out.println("This ip and port doesn't exist!");
+        	System.out.println("This ip and port doesn't exist!");
+        	return;
+        }else{
+        	//if exist, remove ip and port from discovery table
+	        discovTable.values().remove(values);
+	        System.out.println("Remove successfully!");
+	        out.println("Remove successfully!");
+	        return;
+        }
     }
     
-    public static void lookup(String[] msg, PrintWriter out){
-        String ipPort;
-        
+    @SuppressWarnings("unused")
+	public static void lookup(String[] msg, PrintWriter out){ 
+	//check if msg values is invalid
         if (msg.length != 3){
             System.out.println("Error input");
             out.println("Error input");
             return;
         }
         
-        String key = msg[1] + " " + msg[2];
-        ipPort = discovTable.get(key);
+        String ipPort = msg[1] + " " + msg[2];
+        //check if there is such ip and port exit
         if (ipPort == null){
             System.out.println("No such conversion exist!");
             out.println("No such conversion exist!");
             return;
         }else{
-            out.println("Ip and port number is: " + ipPort);
+            out.println("Ip and port number is: " + discovTable.get(ipPort));
         }
         
         return;
@@ -88,15 +108,16 @@ public class DiscovServer {
 
         System.out.println("Received message: " + userInput);
         String[] msg = userInput.split(" ");
+        msg[0] = msg[0].toUpperCase();
         try{
             switch(msg[0]){
-                case "add":
+                case "ADD":
                     add(msg, out);
                     break;
-                case "remove":
+                case "REMOVE":
                     remove(msg, out);
                     break;
-                case "lookup":
+                case "LOOKUP":
                     lookup(msg, out);   
                     break;
                 default:
