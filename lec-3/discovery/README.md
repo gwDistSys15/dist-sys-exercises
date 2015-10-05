@@ -6,7 +6,7 @@ First compile:
 ```
 javac DiscoveryServer.java
 ```
-Then run it with port(ex.11111):
+Then run it with port(ex.1111):
 ```
 java DiscoveryServer 1111
 ```
