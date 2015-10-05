@@ -9,6 +9,7 @@
 
 import socket, sys
 import traceback
+import numpy as np
 from collections import defaultdict
 
 BUFFER_SIZE = 1024
@@ -47,6 +48,8 @@ def cmd_remove(tokens):
 
     return 'Success\n'
 
+
+# Look up a a single conversion server from u1 to u2
 def cmd_lookup(tokens):
     if len(tokens) != 3:
         return 'Failure invalid command. Expected: lookup u1 u2.\n'
@@ -58,9 +61,99 @@ def cmd_lookup(tokens):
     msg = '%s %s\n' % (host,port)
     return msg
 
+# A list of all available units, and conversions to and from unit ids
+units = ('ft', 'in', 'cm', 'm', 'kg', 'g', 'lbs', 'b', '$', 'y')
+n_units = len(units)
+unit_to_id = {}
+id_to_unit = {}
+for i,e in enumerate(units):
+    unit_to_id[e] = i
+    id_to_unit[i] = e
+
+MAX_DIST = 99
+
+# Find paths using the Floyd-Warshall
+# algorithm for all-pairs shortest distances.
+def compute_distances(edges, n_units):
+    dist = np.zeros((n_units, n_units), dtype=int)
+    next = np.empty((n_units, n_units), dtype=int)
+    next.fill(-1)
+
+    for i in range(n_units):
+        for j in range(n_units):
+            dist[i][j] = MAX_DIST
+
+    for i in range(n_units):
+        dist[i][i] = 0
+
+    for i in range(n_units):
+        for j in range(n_units):
+            if edges[i][j] > 0:
+                dist[i][j] = edges[i][j]
+                next[i][j] = j
+
+    for k in range(n_units):
+        for i in range(n_units):
+            for j in range(n_units):
+                if dist[i][j] > dist[i][k] + dist[k][j]:
+                    dist[i][j] = dist[i][k] + dist[k][j]
+                    next[i][j] = next[i][k]
+
+    return (next, dist)
+
+# Path reconstruction from next-neighbor matrix.
+def get_path(src, dst):
+    print("Get path %s %s\n" % (src, dst))
+
+    edges = np.zeros((n_units, n_units), dtype=int)
+    for i in unit_to_server.items():
+        u0 = i[0][0]
+        u1 = i[0][1]
+        edges[unit_to_id[u0]][unit_to_id[u1]] = 1
+
+    next,dist = compute_distances(edges, n_units)
+
+    path = []
+    u = unit_to_id[src]
+    v = unit_to_id[dst]
+
+    if next[u, v] == -1:
+        return path
+
+    while u != v:
+        u = next[u, v]
+        path.append(u)
+
+    return path
+
+
+# Look up a path from u1 to u2
+def cmd_path(tokens):
+    if len(tokens) != 3:
+        return 'Failure invalid command. Expected: path u1 u2.\n'
+    u1,u2 = tokens[1:]
+    p = get_path(u1, u2)
+
+    if not p:
+        msg = "Failure could not find a suitable input conversion server :(\n"
+    else:
+        msg = ""
+        u = unit_to_id[u1]
+        for i in p:
+            v = i
+            s,d = id_to_unit[u],id_to_unit[v]
+            host,port = unit_to_server[(s,d)].items()[0][0]
+            msg += ('Query %s %s to server at %s %s\n' % (s, d, host, port))
+            u = v
+    return msg
+
+
+
+
 commands = { "add" : cmd_add,
              "remove" : cmd_remove,
              "lookup" : cmd_lookup,
+             "path" : cmd_path,
              }
 
 
