@@ -1,0 +1,19 @@
+add ft m localhost 5570
+add m ft localhost 5571
+add ft in localhost 5572
+add in ft localhost 5573
+add in cm localhost 5574
+add cm in localhost 5575
+add b m localhost 5576
+add m b localhost 5577
+add b y localhost 5578
+add y b localhost 5579
+add y $ localhost 5580
+add $ y localhost 5581
+add b kg localhost 5582
+add kg b localhost 5583
+add kg lbs localhost 5584
+add lbs kg localhost 5585
+add lbs g localhost 5586
+add g lbs localhost 5587
+path ft lbs
