@@ -101,15 +101,16 @@ public class DiscovServer {
 
         System.out.println("Received message: " + userInput);
         String[] msg = userInput.split(" ");
+        msg[0] = msg[0].toUpperCase();
         try{
             switch(msg[0]){
-                case "add":
+                case "ADD":
                     add(msg, out);
                     break;
-                case "remove":
+                case "REMOVE":
                     remove(msg, out);
                     break;
-                case "lookup":
+                case "LOOKUP":
                     lookup(msg, out);   
                     break;
                 default:
