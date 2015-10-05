@@ -26,8 +26,6 @@ add unit_src unit_dst conversion-host conversion-port\n
 ```
 This adds a source and destination unit to the discovery server.
 
-```
-
 ## Add Response
 ```
 Success\n
