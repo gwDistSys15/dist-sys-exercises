@@ -9,6 +9,8 @@ For path-finding, it builds an internal graph representation of the
 conversion server network, and processes conversion requests by doing
 a shortest-path traversal through the conversion network.
 
+All the code is in the lec-3/discovery/protypes directory.
+
 # Protocol
 The protocol supports add, remove, lookup, and path commands. In the
 following format:
@@ -82,11 +84,76 @@ unit pair and returns the list of hosts and ports along that path.
 
 ## Path Response
 ```
-host1 port1\n
-host2 port2\n
+Query u1a u1b to server at host1 port1
+Query u2a u2b to server at host2 port2
+Query u3a u3b to server at host3 port3
 ...
 ```
 or
 ```
 Failure\n
 ```
+Where u1a u1b is the first unit pair to query, u2a u2b is the second
+and so on.
+
+
+# Test Plan
+To start the discovery server, just run with a port number.
+Example:
+```
+python2 discovery.py 5555
+```
+
+Then you can add conversion servers to it. Multi-line messages are
+supported! I have created several input files for ease of use.
+Example:
+```
+>cat input-02.txt                      
+add ft m localhost 5570
+add m ft localhost 5571
+add ft in localhost 5572
+add in ft localhost 5573
+add in cm localhost 5574
+add cm in localhost 5575
+add b m localhost 5576
+add m b localhost 5577
+add b y localhost 5578
+add y b localhost 5579
+add y $ localhost 5580
+add $ y localhost 5581
+add b kg localhost 5582
+add kg b localhost 5583
+add kg lbs localhost 5584
+add lbs kg localhost 5585
+add lbs g localhost 5586
+add g lbs localhost 5587
+path ft lbs
+
+>nc localhost 7001 < input-02.txt
+Welcome, you are connected to a Python-based simple command server.
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Success
+Query ft m to server at localhost 5570
+Query m b to server at localhost 5577
+Query b kg to server at localhost 5582
+Query kg lbs to server at localhost 5584
+```
+
+The Query strings are the responses are the responses to the path
+command.
