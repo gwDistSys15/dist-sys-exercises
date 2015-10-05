@@ -62,12 +62,16 @@ lookup unit1 unit2\n
 
 This queries the discovery server for a single source and destination
 unit pair and returns the host and port associated with it.
-Responds with a success or failure as indicated below.
+Responds with a success (host port or "None." for not found) or failure as indicated below.
 
 
 ## Lookup Response
 ```
 host port\n
+```
+or
+```
+None.\n
 ```
 or
 ```
