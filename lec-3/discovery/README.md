@@ -9,6 +9,8 @@ For path-finding, it builds an internal graph representation of the
 conversion server network, and processes conversion requests by doing
 a shortest-path traversal through the conversion network.
 
+All the code is in the lec-3/discovery/protypes directory.
+
 # Protocol
 The protocol supports add, remove, lookup, and path commands. In the
 following format:
