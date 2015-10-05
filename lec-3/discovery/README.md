@@ -57,7 +57,7 @@ Failure\n
 
 # Lookup
 ```
-lookup unit1 unit2\n'
+lookup unit1 unit2\n
 ```
 
 This queries the discovery server for a single source and destination
@@ -76,7 +76,7 @@ Failure\n
 
 # Path finding
 ```
-path unit1 unit2\n'
+path unit1 unit2\n
 ```
 
 This queries the discovery server for a conversion path between the source and destination
