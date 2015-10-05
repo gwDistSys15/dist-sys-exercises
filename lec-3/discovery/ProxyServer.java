@@ -21,9 +21,8 @@ import java.util.HashMap;
 public class ProxyServer {
     
     // server ip address
-    static String lbsConvb = "127.0.0.1 5553";
-    static String bConvin = "127.0.0.1 5554";
-    static String bConvg = "127.0.0.1 5555";
+    static String DISCOV_IP = "127.0.0.1";
+    static int DISCOV_PORT = 5555;
     static int NUMOFNODES = 4;
     /* convertion table
     *   lbs  b  in  g
@@ -39,7 +38,7 @@ public class ProxyServer {
                             
     static String[] getLable = {"lbs","b","in","g"};
     static HashMap<String, Integer> getNum;
-    static HashMap<String, String> getServer;
+    //static HashMap<String, String> getServer;
     
     /*
      * use BFS to visit all the nodes to find a convertion path
@@ -87,6 +86,34 @@ public class ProxyServer {
     }   
     
     /*
+     * send msg to discover server
+     */
+    public static String send_to_discov(String msg){
+        Socket sock = null;
+        try {
+            sock = new Socket(DISCOV_IP, DISCOV_PORT);    //get the socket and connet to the server
+            BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            PrintWriter out = new PrintWriter(sock.getOutputStream(), true);    //get printer
+            out.println(msg);   //send messages
+            
+            String userInput;
+            if ((userInput = in.readLine()) == null) {
+                System.out.println("Error reading message");
+            }
+            userInput = in.readLine();
+            in.close();
+            out.close();
+            sock.close();
+            if(!userInput.split(":")[0].equals("Error"))
+                return userInput;
+        } catch(Exception e) {
+            System.out.println("ERROR:"+e);
+            System.exit(-1); 
+        }
+        return null;
+    }
+    
+    /*
      * change lable to number in convTable
      */
     public static void init(){
@@ -95,13 +122,6 @@ public class ProxyServer {
         getNum.put("b", 1);
         getNum.put("in", 2);
         getNum.put("g", 3);
-        getServer = new HashMap<String, String>();
-        getServer.put("lbs b", lbsConvb);
-        getServer.put("b lbs", lbsConvb);
-        getServer.put("b in", bConvin);
-        getServer.put("in b", bConvin);
-        getServer.put("b g", bConvg);
-        getServer.put("g b", bConvg);
     }
     
     public static String[] callServer(String msg, String server) {
@@ -110,15 +130,16 @@ public class ProxyServer {
         String[] userInput = null;
         BufferedReader in = null;
         PrintWriter out = null;
+        
         try {
             String[] serverArg = server.split(" ");
             sock = new Socket(serverArg[0], Integer.parseInt(serverArg[1]));    //get the socket and connet to the server
-            BufferedReader in = new BufferedReader(new InputStreamReader(sock.getInputStream()));   //get reader
-            PrintWriter out = new PrintWriter(sock.getOutputStream(), true);    //get printer
+            in = new BufferedReader(new InputStreamReader(sock.getInputStream()));   //get reader
+            out = new PrintWriter(sock.getOutputStream(), true);    //get printer
             out.println(msg + "\n");   //send messages
             userInput = new String[2];
             
-            if ((userInput[0] = in.readLine()) == null) {  //get reply
+           if ((userInput[0] = in.readLine()) == null) {  //get reply
                 System.out.println("Error reading message");
                 out.close();
                 in.close();
@@ -201,7 +222,9 @@ public class ProxyServer {
                 
                 String argNum = arg[2];
                 for(int i = j; i > 0; i--){
-                    String[] result = callServer(getLable[path[i]]+" "+getLable[path[i-1]]+" "+argNum, getServer.get(getLable[path[i]]+" "+getLable[path[i-1]]));
+                    String server = send_to_discov("lookup " + getLable[path[i]] + " " + getLable[path[i-1]] + "\n");
+                    System.out.println(server);
+                    String[] result = callServer(getLable[path[i]]+" "+getLable[path[i-1]]+" "+argNum, server);
                     out.println(result[0]);
                     argNum = result[1];
                     
@@ -225,7 +248,7 @@ public class ProxyServer {
         int port = Integer.parseInt(args[0]);
         ServerSocket serverSocket = new ServerSocket(port);
         System.err.println("Started server on port " + port);
-
+        
         // wait for connections, and process
         try {
             while(true) {

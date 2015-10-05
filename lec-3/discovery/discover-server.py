@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-# Ahsen Uppal
 #
 # CS 6421 - Simple Python based single value store server.
 # Uses a dictionary dispatch table to process simple single value get
@@ -13,13 +12,23 @@ BUFFER_SIZE = 1024
 
 # Key-Value store
 values = {}
+#path_lkup = {}
 
 def cmd_add(tokens):
+    haskey = 0;
     if len(tokens) > 5:
         return 'Protocol:ADD UNIT1 UNIT2 IP_ADDRESS PORT_NO.\n'
-    elif tokens[1]+tokens[2] in values or tokens[2]+tokens[1] in values:
-        return 'FAILURE exists.\n'
-    values[tokens[1]+tokens[2]] = tokens[3]+' '+tokens[4];
+    for key in values.keys():
+        if key == tokens[1]+tokens[2] or key == tokens[2]+tokens[1]:
+            haskey = 1;
+            for cur_addr in values[key]:
+                if cur_addr == tokens[3]+' '+tokens[4]:
+                    return 'FAILURE exists.\n'
+            values[key].append(tokens[3]+' '+tokens[4])
+            
+    if haskey == 0:        
+        values[tokens[1]+tokens[2]] = [tokens[3]+' '+tokens[4]] 
+    
     return ('SUCCESS\n')
 
 def cmd_remove(tokens):
@@ -27,22 +36,24 @@ def cmd_remove(tokens):
     if len(tokens) > 3:
         return 'Protocol: REMOVE IP_ADDRESS PORT_NO.\n'
     for key in values.keys():
-        if values[key] == tokens[1]+' '+tokens[2]:
-            values.pop(key);
-            remove = 1;
+        for cur_addr in values[key]: 
+            if cur_addr == tokens[1]+' '+tokens[2]:
+                values[key].remove(tokens[1]+' '+tokens[2]);
+                remove = 1;
     if remove == 0:
         return 'FAILURE IP_ADDR and port not found.\n'
     return ('SUCCESS\n')
     
 def cmd_lookup(tokens):
+    print tokens
     if len(tokens) > 3:
         return 'Protocol: LOOKUP UNIT1 UNIT2.\n'
     elif values is None:
         return 'Error: LOOKUP table is empty.\n'
     if tokens[1]+tokens[2] in values:
-        return values[tokens[1]+tokens[2]]+'\n'
+        return values[tokens[1]+tokens[2]][0]+'\n'
     elif tokens[2]+tokens[1] in values:
-        return values[tokens[2]+tokens[1]]+'\n'
+        return values[tokens[2]+tokens[1]][0]+'\n'
     else:
         return 'Error: can not accomplish this convertion.'
      
