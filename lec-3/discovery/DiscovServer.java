@@ -2,9 +2,19 @@
  *
  *  CS 6421 - Discovery Server
  *  implement a discoverty server store adresses information
+<<<<<<< HEAD
  *  author guoluona
  * 
+=======
+ *  @author guoluona
+ *  Compilation:  javac DiscovServer.java
+ *  Execution:    java DiscovServer
+ *
+ *  % java DiscovServer portnum
+>>>>>>> a5c6897771cdedb677f27b088ec8d21f8e15fa2f
  ******************************************************************************/
+
+package com.discovery.server;
 
 import java.net.*;
 import java.io.*;
@@ -12,6 +22,12 @@ import java.util.*;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
+<<<<<<< HEAD
+=======
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
+>>>>>>> a5c6897771cdedb677f27b088ec8d21f8e15fa2f
 public class DiscovServer {
     static Multimap<String, String> discovTable = ArrayListMultimap.create();
     
@@ -25,11 +41,26 @@ public class DiscovServer {
         
         String key = msg[1] + " " + msg[2];
         String value = msg[3] + " " + msg[4];
+<<<<<<< HEAD
         discovTable.put(key, value);
         System.out.println("Add successfully!");
         //System.out.println("values = " + Multimap.get(key) + "n"); 
         out.println("Add successfully!");
         return;
+=======
+        Collection<String> values = discovTable.get(key);
+        if(values.contains(value)){
+        	out.println("This ip and port has already exist!");
+        	System.out.println("This ip and port has already exist!");
+        	return;
+        }else{
+	        discovTable.put(key, value);
+	        System.out.println("Add successfully!");
+	        //System.out.println("values = " + Multimap.get(key) + "n"); 
+	        out.println("Add successfully!");
+	        return;
+        }
+>>>>>>> a5c6897771cdedb677f27b088ec8d21f8e15fa2f
     }
     
     public static void remove(String[] msg, PrintWriter out){
@@ -48,22 +79,29 @@ public class DiscovServer {
         return;
     }
     
-    public static void lookup(String[] msg, PrintWriter out){
-        String ipPort;
-        
+    @SuppressWarnings("unused")
+	public static void lookup(String[] msg, PrintWriter out){ 
         if (msg.length != 3){
             System.out.println("Error input");
             out.println("Error input");
             return;
         }
         
+<<<<<<< HEAD
         String key = msg[1] + " " + msg[2];
+=======
+        String ipPort = msg[1] + " " + msg[2];
+>>>>>>> a5c6897771cdedb677f27b088ec8d21f8e15fa2f
         if (ipPort == null){
             System.out.println("No such conversion exist!");
             out.println("No such conversion exist!");
             return;
         }else{
+<<<<<<< HEAD
             out.println("Ip and port number is: " + discovTable.get(key) + "n");
+=======
+            out.println("Ip and port number is: " + discovTable.get(ipPort));
+>>>>>>> a5c6897771cdedb677f27b088ec8d21f8e15fa2f
         }
         
         return;
@@ -89,15 +127,16 @@ public class DiscovServer {
 
         System.out.println("Received message: " + userInput);
         String[] msg = userInput.split(" ");
+        msg[0] = msg[0].toUpperCase();
         try{
             switch(msg[0]){
-                case "add":
+                case "ADD":
                     add(msg, out);
                     break;
-                case "remove":
+                case "REMOVE":
                     remove(msg, out);
                     break;
-                case "lookup":
+                case "LOOKUP":
                     lookup(msg, out);   
                     break;
                 default:
