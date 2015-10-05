@@ -2,19 +2,19 @@
  *
  *  CS 6421 - Discovery Server
  *  implement a discoverty server store adresses information
- *  Compilation:  javac DiscovServer.java
- *  Execution:    java DiscovServer
- *
- *  % java DiscovServer portnum
+ *  author guoluona
+ * 
  ******************************************************************************/
 
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
 
 public class DiscovServer {
-    static HashMap<String, String> discovTable  = new HashMap<String, String>();
-
+    static Multimap<String, String> discovTable = ArrayListMultimap.create();
+    
     public static void add(String[] msg, PrintWriter out){
         if (msg.length != 5){
             System.out.println("Error input");
@@ -27,6 +27,7 @@ public class DiscovServer {
         String value = msg[3] + " " + msg[4];
         discovTable.put(key, value);
         System.out.println("Add successfully!");
+        //System.out.println("values = " + Multimap.get(key) + "n"); 
         out.println("Add successfully!");
         return;
     }
@@ -35,12 +36,13 @@ public class DiscovServer {
         if (msg.length != 3){
             System.out.println("Error input");
             out.println("Error input");
-            out.println("Please input in format of <remove unit1 unit2>");
+            out.println("Please input in format of <remove unit3 unit4>");
             return;
         }
         
-        String key = msg[1] + " " + msg[2];
-        discovTable.remove(key);
+        String values = msg[1] + " " + msg[2];
+        discovTable.values().remove(values);
+        //System.out.println("the keys are:");
         System.out.println("Remove successfully!");
         out.println("Remove successfully!");
         return;
@@ -56,13 +58,12 @@ public class DiscovServer {
         }
         
         String key = msg[1] + " " + msg[2];
-        ipPort = discovTable.get(key);
         if (ipPort == null){
             System.out.println("No such conversion exist!");
             out.println("No such conversion exist!");
             return;
         }else{
-            out.println("Ip and port number is: " + ipPort);
+            out.println("Ip and port number is: " + discovTable.get(key) + "n");
         }
         
         return;
@@ -119,7 +120,7 @@ public class DiscovServer {
             System.err.println("Usage: java ConvServer port");
         }
         // create socket
-        int port = Integer.parseInt(args[0]);
+        int port = 5555;
         ServerSocket serverSocket = new ServerSocket(port);
         System.err.println("Started server on port " + port);
         

@@ -22,13 +22,22 @@ def cmd_get(tokens):
     return values['single']
 
 def cmd_set(tokens):
-    if len(tokens) > 2:
-        return 'Invalid command: Only single value get supported.\n'
-    values['single'] = tokens[1]
-    return ('Value set to %s\n' % values['single'])
+    if len(tokens) != 5:
+        print "set unit1 unit2 ip port\n"
+        res = "set unit1 unit2 ip port\n"
+        return res;
+        
+        convUnit = tokens[1].strip('\r') + ":" + tokens[2].strip('\r')
+        ipPort = tokens[3].strip('\r') + ":" + tokens[4].strip('\r')
+        serverList.update({convUnit:ipPort})
+        print serverList
+        res = "set done"
+        
+        return res
 
-commands = { "get" : cmd_get,
-             "set" : cmd_set,
+commands = { "lookup" : cmd_get,
+             "addr" : cmd_set,
+             "remove" : cmd_remove,
              }
 
 def process(conn):
@@ -41,7 +50,7 @@ def process(conn):
         return
 
     sys.stdout.write("Received message: %s" % userInput)
-    tokens = userInput.split()
+    tokens = userInput.split(' ')
 
     try:
         if tokens[0] in commands:
@@ -60,7 +69,12 @@ def process(conn):
 
 if __name__ == '__main__':
     interface = ""
-
+    
+    class HashTable:
+        def __init__(serverList):
+            serverList.size = 20
+    ##########################################
+    
     if len(sys.argv) < 2:
         sys.stderr.write("usage: python {0} portnum\n".format(sys.argv[0]))
         sys.exit(1)
@@ -70,6 +84,7 @@ if __name__ == '__main__':
     s.bind((interface, portnum))
     s.listen(5)
     exit_flag = False
+    
     try:
         print("Started Python-based command server on port %s" % (portnum))
         while not exit_flag:
