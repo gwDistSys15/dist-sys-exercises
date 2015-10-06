@@ -3,7 +3,8 @@
 This is the HW 4 submission for Ahsen Uppal and Luona Guo, Zhenyu Han, Zuocheng Ding, Qi Liu, Yi Zhou.
 This shows an example of a Python-based discovery conversion server
 (in prototypes/discovery.py) that supports add, remove, and lookup. For extra credit, this
-discovery server includes path-finding. And the proxy_conv_server.py
+discovery server includes path-finding and support for unidirectional
+servers (see the adduni command). And the proxy_conv_server.py
 supports querying and using this protocol for path conversions. The
 conversion servers in convServer.py here support registering and
 de-registering with the discovery server upon startup and shutdown.
