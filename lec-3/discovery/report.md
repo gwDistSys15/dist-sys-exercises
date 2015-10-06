@@ -237,7 +237,7 @@ discovery-host discovery-port.
 
 Example:
 ```
-Usage: python proxy_conv_server.py 7778 localhost 5555
+python proxy_conv_server.py 7778 localhost 5555
 ```
 
 # Other notes
