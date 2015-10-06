@@ -213,10 +213,9 @@ The Query strings are the responses are the responses to the path
 command.
 
 # Test cases discovery server
-Briefly, input-00.txt verifies basic discovery add, remove, and lookup
-capabilities. Including for duplicate entries. In input-01.txt we
+Briefly, input-00.txt verifies basic unidirectional discovery add, remove, and lookup capabilities. Including for duplicate entries. In input-01.txt we
 verify that syntax errors are properly handled. And input-02.txt
-verifies multi-path queriues. The input-03.txt verifies bi-directional
+verifies multi-path queriues. The input-03.txt verifies basic bidirectional
 server support.
 
 # Test cases conversion and proxy server
