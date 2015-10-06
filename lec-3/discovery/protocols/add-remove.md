@@ -1,4 +1,10 @@
 # Add and Remove Protocol
-Describe your protocol here.
 
-If you are feeling ambitious, have someone make a figure with a tool like this: http://bramp.github.io/js-sequence-diagrams/
+add command: 
+```
+add <unit_1> <unit_2> <IP> <port>\n
+```
+whereas remove command is:
+```
+remove <IP> <port>\n
+```

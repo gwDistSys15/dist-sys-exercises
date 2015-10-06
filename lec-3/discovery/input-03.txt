@@ -1,0 +1,7 @@
+add in cm localhost 7777
+lookup in cm
+lookup cm in
+remove localhost 7777
+lookup in cm
+lookup cm in
+

@@ -1,0 +1,6 @@
+0 add in cm localhost 8888
+1 add in cm localhost 8888
+2 lookup in cm
+3 lookup in cm
+4 remove localhost 8888
+5 remove localhost 8888

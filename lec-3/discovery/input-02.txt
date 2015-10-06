@@ -1,0 +1,19 @@
+adduni ft m localhost 5570
+adduni m ft localhost 5571
+adduni ft in localhost 5572
+adduni in ft localhost 5573
+adduni in cm localhost 5574
+adduni cm in localhost 5575
+adduni b m localhost 5576
+adduni m b localhost 5577
+adduni b y localhost 5578
+adduni y b localhost 5579
+adduni y $ localhost 5580
+adduni $ y localhost 5581
+adduni b kg localhost 5582
+adduni kg b localhost 5583
+adduni kg lbs localhost 5584
+adduni lbs kg localhost 5585
+adduni lbs g localhost 5586
+adduni g lbs localhost 5587
+path ft lbs

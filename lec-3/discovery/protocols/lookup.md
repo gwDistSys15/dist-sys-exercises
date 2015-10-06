@@ -1,4 +1,17 @@
 # Lookup Protocol
-Describe your protocol here.
 
-If you are feeling ambitious, have someone make a figure with a tool like this: http://bramp.github.io/js-sequence-diagrams/
+For request:
+```
+Lookup <unit_src> <unit_dest>
+```
+should receive response in this format:
+if successful:
+```
+IP_ADDRESS PORT\n
+```
+if nothing was found:
+```
+"none"\n
+```
+
+    
