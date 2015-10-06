@@ -13,7 +13,7 @@ For path-finding, it builds an internal graph representation of the
 conversion server network, and processes conversion requests by doing
 a shortest-path traversal through the conversion network.
 
-All the code is in the lec-3/discovery/protypes directory.
+All the code is in the lec-3/discovery directory.
 
 # Protocol
 The protocol supports add, remove, lookup, and path commands. In the
@@ -141,6 +141,26 @@ telnet or nc.
 
 
 Example:
+Basic bi-directional tests:
+```
+>add in cm localhost 7777
+lookup in cm
+lookup cm in
+remove localhost 7777
+lookup in cm
+lookup cm in
+
+>nc localhost 5555 < input-03.txt
+Welcome, you are connected to a Python-based simple command server.
+Success
+localhost 7777
+localhost 7777
+Success
+None.
+None.
+```
+
+Unidirectional tests:
 ```
 >cat input-02.txt                      
 adduni ft m localhost 5570
