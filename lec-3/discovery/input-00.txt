@@ -1,5 +1,5 @@
-add in cm localhost 8888
-add in cm localhost 8888
+adduni in cm localhost 8888
+adduni in cm localhost 8888
 lookup in cm
 lookup in cm
 remove localhost 8888

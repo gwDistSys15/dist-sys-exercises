@@ -23,8 +23,22 @@ BUFFER_SIZE = 1024
 unit_to_server = defaultdict(dict)
 server_to_unit = {}
 
-# Process an add conversion server command
+# Process an bidirectional add conversion server command
 def cmd_add(tokens):
+    if len(tokens) != 5:
+        return 'Failure invalid command. Expected: add u1 u2 host port.\n'
+    u1,u2,host,port = tokens[1:]
+    if (host,port) in unit_to_server[(u1,u2)]:
+        return 'Failure entry exists.\n'
+    if (host,port) in unit_to_server[(u2,u1)]:
+        return 'Failure entry exists.\n'
+    unit_to_server[(u1,u2)][(host,port)] = 1
+    unit_to_server[(u2,u1)][(host,port)] = 1
+    server_to_unit[(host,port)] = (u1,u2)
+    return 'Success\n'
+
+# Process an unidirectional add conversion server command
+def cmd_adduni(tokens):
     if len(tokens) != 5:
         return 'Failure invalid command. Expected: add u1 u2 host port.\n'
     u1,u2,host,port = tokens[1:]
@@ -41,13 +55,20 @@ def cmd_remove(tokens):
     host,port = tokens[1:]
     if not (host,port) in server_to_unit:
         return 'Failure entry does not exist.\n'
+
     u1,u2 = server_to_unit[(host,port)]
-
     del server_to_unit[(host,port)]
-    del unit_to_server[(u1,u2)][(host,port)]
 
-    if len(unit_to_server[(u1,u2)]) == 0:
-           del unit_to_server[(u1,u2)]
+    if (u1,u2) in unit_to_server:
+        del unit_to_server[(u1,u2)][(host,port)]
+        if len(unit_to_server[(u1,u2)]) == 0:
+            del unit_to_server[(u1,u2)]
+
+    if (u2,u1) in unit_to_server:
+        del unit_to_server[(u2,u1)][(host,port)]
+        if len(unit_to_server[(u2,u1)]) == 0:
+            del unit_to_server[(u2,u1)]
+
     return 'Success\n'
 
 
@@ -160,6 +181,7 @@ def cmd_path(tokens):
 
 # Dict for command dispatch.
 commands = { "add" : cmd_add,
+             "adduni" : cmd_adduni,
              "remove" : cmd_remove,
              "lookup" : cmd_lookup,
              "path" : cmd_path,

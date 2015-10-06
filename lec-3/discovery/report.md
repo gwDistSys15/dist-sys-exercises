@@ -25,9 +25,27 @@ TCP port. In our testing we used port 5555.
 
 # Commands
 
-## Add
+## Bidirectional Add
 ```
 add unit_src unit_dst conversion-host conversion-port\n
+```
+This adds a source and destination unit, and the reverse conversion as
+well to the discovery server. Responds with a success or failure with
+an optional reason as indicated below.
+
+## Add Response
+```
+Success\n
+```
+or
+```
+Failure [reason]\n
+```
+
+
+## Unidirectional Add
+```
+adduni unit_src unit_dst conversion-host conversion-port\n
 ```
 This adds a source and destination unit to the discovery
 server. Responds with a success or failure with an optional reason as
@@ -124,24 +142,24 @@ telnet or nc.
 Example:
 ```
 >cat input-02.txt                      
-add ft m localhost 5570
-add m ft localhost 5571
-add ft in localhost 5572
-add in ft localhost 5573
-add in cm localhost 5574
-add cm in localhost 5575
-add b m localhost 5576
-add m b localhost 5577
-add b y localhost 5578
-add y b localhost 5579
-add y $ localhost 5580
-add $ y localhost 5581
-add b kg localhost 5582
-add kg b localhost 5583
-add kg lbs localhost 5584
-add lbs kg localhost 5585
-add lbs g localhost 5586
-add g lbs localhost 5587
+adduni ft m localhost 5570
+adduni m ft localhost 5571
+adduni ft in localhost 5572
+adduni in ft localhost 5573
+adduni in cm localhost 5574
+adduni cm in localhost 5575
+adduni b m localhost 5576
+adduni m b localhost 5577
+adduni b y localhost 5578
+adduni y b localhost 5579
+adduni y $ localhost 5580
+adduni $ y localhost 5581
+adduni b kg localhost 5582
+adduni kg b localhost 5583
+adduni kg lbs localhost 5584
+adduni lbs kg localhost 5585
+adduni lbs g localhost 5586
+adduni g lbs localhost 5587
 path ft lbs
 
 >nc localhost 5555 < input-02.txt
@@ -177,7 +195,8 @@ command.
 Briefly, input-00.txt verifies basic discovery add, remove, and lookup
 capabilities. Including for duplicate entries. In input-01.txt we
 verify that syntax errors are properly handled. And input-02.txt
-verifies multi-path queriues.
+verifies multi-path queriues. The input-03.txt verifies bi-directional
+server support.
 
 # Test cases conversion and proxy server
 Starting a conversion server with the optional command-line arguments

@@ -72,7 +72,7 @@ def process(conn, force_src_unit=None, force_dst_unit=None):
     conn.send(("%s\n" % converted).encode('UTF-8'))
 
 def discovery_add(src_unit, dst_unit, host, port, myhost, myport):
-    msg = 'add %s %s %s %s\n' % (src_unit, dst_unit, myhost, myport)
+    msg = 'adduni %s %s %s %s\n' % (src_unit, dst_unit, myhost, myport)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.connect((host, int(port)))
     s.sendall(msg.encode('UTF-8'))
