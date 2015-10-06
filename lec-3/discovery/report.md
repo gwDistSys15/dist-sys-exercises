@@ -4,7 +4,9 @@ This is the HW 4 submission for Ahsen Uppal and Luona Guo, Zhenyu Han, Zuocheng 
 This shows an example of a Python-based discovery conversion server
 (in prototypes/discovery.py) that supports add, remove, and lookup. For extra credit, this
 discovery server includes path-finding. And the proxy_conv_server.py
-supports querying and using this protocol for path conversions.
+supports querying and using this protocol for path conversions. The
+conversion servers in convServer.py here support registering and
+de-registering with the discovery server upon startup and shutdown.
 
 For path-finding, it builds an internal graph representation of the
 conversion server network, and processes conversion requests by doing
@@ -171,11 +173,33 @@ Query kg lbs to server at localhost 5584
 The Query strings are the responses are the responses to the path
 command.
 
-# Test cases
-Briefly, input-00.txt verifies basic add, remove, and lookup
+# Test cases discovery server
+Briefly, input-00.txt verifies basic discovery add, remove, and lookup
 capabilities. Including for duplicate entries. In input-01.txt we
 verify that syntax errors are properly handled. And input-02.txt
 verifies multi-path queriues.
+
+# Test cases conversion and proxy server
+Starting a conversion server with the optional command-line arguments
+to point to a discovery server will automatically register and
+de-register the service. Usage: python convServer.py portnum [unit1
+unit2] [myhost discovery-host discovery-port].
+Example:
+```
+python convServer.py 7777 cm in localhost localhost 5555
+```
+This starts a cm to in conversion server and registers it with the
+local discovery server.
+Similarly, starting a proxy server with the optional command-line arguments
+to point to a discovery server will automatically query the discovery
+server for conversion path information and then query the conversion
+servers along that path. Usage: python proxy_conv_server.py portnum
+discovery-host discovery-port.
+
+Example:
+```
+Usage: python proxy_conv_server.py 7778 localhost 5555
+```
 
 # Other notes
 We discovered that the recv socket call may return less data than has
