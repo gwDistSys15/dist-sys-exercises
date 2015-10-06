@@ -143,7 +143,8 @@ telnet or nc.
 Example:
 Basic bi-directional tests:
 ```
->add in cm localhost 7777
+>cat input-03.txt
+add in cm localhost 7777
 lookup in cm
 lookup cm in
 remove localhost 7777
