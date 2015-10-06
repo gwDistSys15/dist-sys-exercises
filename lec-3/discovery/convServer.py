@@ -82,6 +82,17 @@ def discovery_add(src_unit, dst_unit, host, port, myhost, myport):
     if not msg.startswith('Success'):
         raise Exception('Discovery failed to register us: %s' % (msg))
 
+def discovery_remove(src_unit, dst_unit, host, port, myhost, myport):
+    msg = 'remove %s %s\n' % (myhost, myport)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((host, int(port)))
+    s.sendall(msg.encode('UTF-8'))
+    greeting = s.recv(BUFFER_SIZE)
+    msg = s.recv(BUFFER_SIZE).decode('UTF-8')
+    print (msg)
+    if not msg.startswith('Success'):
+        raise Exception('Discovery failed to de-register us: %s' % (msg))
+
 
 if __name__ == '__main__':
     force_src_unit = 'in'
@@ -90,7 +101,7 @@ if __name__ == '__main__':
     interface = ""
 
     if len(sys.argv) < 2:
-        sys.stderr.write("usage: python \n")
+        sys.stderr.write("usage: python convServer.py portnum [unit1 unit2] [myhost discovery-host discovery-port]\n")
         sys.exit(1)
 
     portnum = int(sys.argv[1])
@@ -110,7 +121,7 @@ if __name__ == '__main__':
 
     # Register us with the discovery server and check the result
     try:
-        discovery_add(force_src_unit, force_src_unit, discovery_host, discovery_port, myhost, portnum)
+        discovery_add(force_src_unit, force_dst_unit, discovery_host, discovery_port, myhost, portnum)
     except:
         traceback.print_exc(file=sys.stdout)
         print("Exiting.")
@@ -129,7 +140,10 @@ if __name__ == '__main__':
             conn.close()
     except KeyboardInterrupt:
         exit_flag = True
+    except:
+        traceback.print_exc(file=sys.stdout)
 
+    discovery_remove(force_src_unit, force_dst_unit, discovery_host, discovery_port, myhost, portnum)
     print("Exiting...")
     s.close()
     sys.exit(0)
