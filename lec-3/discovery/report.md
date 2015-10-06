@@ -34,7 +34,7 @@ This adds a source and destination unit, and the reverse conversion as
 well to the discovery server. Responds with a success or failure with
 an optional reason as indicated below.
 
-## Add Response
+## Bidirectional Add Response
 ```
 Success\n
 ```
@@ -52,7 +52,7 @@ This adds a source and destination unit to the discovery
 server. Responds with a success or failure with an optional reason as
 indicated below.
 
-## Add Response
+## Unidirectional Add Response
 ```
 Success\n
 ```
