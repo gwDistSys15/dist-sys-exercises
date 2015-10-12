@@ -66,7 +66,7 @@ Put this code into a file named ``hello.c``.  Then you can compile and run it wi
 # compile with MPI compiler
 mpicc hello.c -o hello
 # run with eight processes:
-mpirun -n8 ./hello
+mpirun -n 8 ./hello
 ```
 
 ## Sending and Receiving
