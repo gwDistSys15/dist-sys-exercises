@@ -102,3 +102,7 @@ Write small programs to test the behavior in these different cases:
   - What happens if Node 0 sends a float and then an int to Node 1, but Node 1 tries to first receive an int and then receive the float?
   - What happens if Node 0 sends an int with tag 1 and Node 2 tries to receive an int with tag 5?
   - In the example above, what happens if Node 2 tries to receive an int with tag `MPI_ANY_TAG`?
+
+These will take a little more research on your part to figure out:
+  - What is the ``MPI_Barrier`` function for? Write a small program that demonstrates its use.
+  - Is it possible to broadcast a message from node 0 to all others in one function call? Write a program to do this?
