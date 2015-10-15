@@ -69,6 +69,8 @@ mpicc hello.c -o hello
 mpirun -n 8 ./hello
 ```
 
+**Remember:** you can't just run the program with `./hello` like you normally would, you need to use the `mpirun` command if you want it to work with multiple processes.
+
 ## Sending and Receiving
 The API for sending and receiving is:
 ```
@@ -89,6 +91,24 @@ MPI_Recv(
     MPI_Comm communicator,
     MPI_Status* status)
 ```
+For example, a simple program that causes the Rank 0 node to send a packet to the Rank 1 node might have code like this:
+```
+int rank;
+int number;
+
+// MPI init code would be here...
+
+MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+
+if(rank == 0) {
+        number = 123;
+        MPI_Send(&number, 1, MPI_INT, 1, 0, MPI_COMM_WORLD);
+} else if (world_rank == 1) {
+        MPI_Recv(&number, 1, MPI_INT, 0, 0, MPI_COMM_WORLD,
+        MPI_STATUS_IGNORE);
+}
+```
+This uses a tag of 0, the default communicator, and does not generate a status struct on the receive path.
 
 #### Loop Counter Exercise:
 
