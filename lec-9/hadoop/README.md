@@ -17,7 +17,6 @@ node-8  pcvm601-19      pcvm    ssh -p 30785 timwoo0@pc601.emulab.net
 node-9  pcvm602-6       pcvm    ssh -p 30779 timwoo0@pc602.emulab.net
 ```
 
-
 2. Update source list and install java, install vim 
 
 Java is alreay installed on your node, *so you can skip this step*. 
