@@ -24,12 +24,12 @@ Java is alreay installed on your node, *so you can skip this step*.
 $ sudo apt-get update
 $ sudo apt-get install default-jdk
 $ java -version
+```
+
+
+3. Install vim, genrate ssh key for log in without password
+```
 $ sudo apt-get install vim
-```
-
-
-3. genrate ssh key for log in without password
-```
 $ ssh-keygen -t rsa -P ""
 $ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 $ ssh localhost  # verify you don't need to enter a password
@@ -59,19 +59,20 @@ export YARN_HOME=$HADOOP_INSTALL
 export HADOOP_COMMON_LIB_NATIVE_DIR=$HADOOP_INSTALL/lib/native
 export PATH=$PATH:$HADOOP_INSTALL/sbin
 export PATH=$PATH:$HADOOP_INSTALL/bin
+export PATH=$PATH::/usr/bin:/usr/sbin:/bin:/sbin
+export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
+
 #HADOOP VARIABLES END
 
 
 $ source ~/.bashrc
 
 $ readlink -f /usr/bin/javac
-
-$ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/local/hadoop/sbin:/usr/local/hadoop/bin:/usr/local/hadoop/sbin:/usr/local/hadoop/bin
 ```
 
 5.2. all hadoop config files are in Install_dir/etc/hadoop
 ```
-$ cd Install_dir/etc/hadoop
+$ cd /usr/local/hadoop/etc/hadoop
 # add "export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64" to "hadoop-env.sh"
 ```
 
@@ -113,13 +114,13 @@ $ vim /usr/local/hadoop/etc/hadoop/hdfs-site.xml
 ```
 
 
-5.5 Execute 
+5.5 Clean out HDFS storage 
 ```
 $ cd /usr/local/hadoop
 $ ./bin/hdfs namenode -format
 ```
 
-all scripts are located in sbin folder
+all scripts are located in /usr/local/hadoop/sbin folder
 
   * using `$start-all.sh` to start 
   * using `$ jps` to test 
@@ -131,10 +132,10 @@ $ jps
 $ ./sbin/stop-dfs.sh
 ```
 
-5.6 Example: WordCount
+5.6 Examples
 
 ```
-Using jar file: 
+Option 1: Using jar file to run grep: 
 
 $ ./bin/hdfs dfs -mkdir -p /user/hadoop
 $ ./bin/hdfs dfs -mkdir /input
@@ -142,13 +143,12 @@ $ ./bin/hdfs dfs -put etc/hadoop/*.xml /input
 $ ./bin/hadoop jar share/hadoop/mapreduce/hadoop-mapreduce-examples-2.6.0.jar grep input output 'dfs[a-z.]+'
 $ ./bin/hdfs dfs -cat output/*
 
-Compile from source:
+Option 2: Get WordCount from source:
 
 $ cd ur_dir
 $ vim WordCount.java   (Sample file: https://hadoop.apache.org/docs/current/hadoop-mapreduce-client/hadoop-mapreduce-client-core/MapReduceTutorial.html)
 $ echo $JAVA_HOME
 $ export PATH=${JAVA_HOME}/bin:${PATH}
-$ export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
 $ /usr/local/hadoop/bin/hadoop com.sun.tools.javac.Main WordCount.java
 $ jar cf wc.jar WordCount*.class
 $ /usr/local/hadoop/bin/hdfs dfs -mkdir /input
