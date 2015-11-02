@@ -45,7 +45,7 @@ $ sudo mv ./hadoop-2.6.0/ ./hadoop
 $ sudo chown -R timwoo0 ./hadoop 
 ```
 
-5.Setup Configuration for Hadoop \\
+5.Setup Configuration for Hadoop 
 
 
 5.1 
