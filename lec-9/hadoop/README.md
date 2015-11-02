@@ -1,7 +1,7 @@
 # Hadoop Cluster Installation
 
 
-1. Log onto one of the machines based on your group number:
+1.Log onto one of the machines based on your group number:
 ```
 ## Be sure to get the dist_sys SSH key from webpage first
 ##  https://gist.github.com/twood02/e8382cde6803b7e00949
@@ -17,7 +17,7 @@ node-8  pcvm601-19      pcvm    ssh -p 30785 timwoo0@pc601.emulab.net
 node-9  pcvm602-6       pcvm    ssh -p 30779 timwoo0@pc602.emulab.net
 ```
 
-2. Update source list and install java, install vim 
+2.Update source list and install java, install vim 
 
 Java is alreay installed on your node, *so you can skip this step*. 
 ```
@@ -28,7 +28,7 @@ $ java -version
 ```
 
 
-3. Install vim, genrate ssh key for log in without password
+3.Install vim, genrate ssh key for log in without password
 ```
 $ sudo apt-get install vim
 $ ssh-keygen -t rsa -P ""
@@ -36,7 +36,7 @@ $ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 $ ssh localhost  # verify you don't need to enter a password
 ```
 
-4. Install Hadoop 
+4.Install Hadoop 
 ```
 $ sudo wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
 $ sudo tar -zxvf ./hadoop-2.6.0.tar.gz -C /usr/local
@@ -45,7 +45,9 @@ $ sudo mv ./hadoop-2.6.0/ ./hadoop
 $ sudo chown -R timwoo0 ./hadoop 
 ```
 
-5. Setup Configuration for Hadoop \\
+5.Setup Configuration for Hadoop \\
+
+
 5.1 
 ```
 $ vi ~/.bashrc  ## Add these lines:
