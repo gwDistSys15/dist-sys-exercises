@@ -1,37 +1,50 @@
-Password: cloud
-The whole process will take about 10 minutes,
-Java is alreay installed on your node, so you can skip step one. 
 
-1. Update source list and install java, install vim 
+1. Log onto one of the machines based on your group number:
 ```
+## Be sure to get the dist_sys SSH key from webpage first
+##  https://gist.github.com/twood02/e8382cde6803b7e00949
+node-0  pcvm601-12      pcvm    ssh -p 30778 timwoo0@pc601.emulab.net   
+node-1  pcvm601-13      pcvm    ssh -p 30779 timwoo0@pc601.emulab.net   
+node-2  pcvm601-14      pcvm    ssh -p 30780 timwoo0@pc601.emulab.net   
+node-3  pcvm601-15      pcvm    ssh -p 30781 timwoo0@pc601.emulab.net   
+node-4  pcvm601-16      pcvm    ssh -p 30782 timwoo0@pc601.emulab.net   
+node-5  pcvm601-17      pcvm    ssh -p 30783 timwoo0@pc601.emulab.net   
+node-6  pcvm601-18      pcvm    ssh -p 30784 timwoo0@pc601.emulab.net   
+node-7  pcvm602-5       pcvm    ssh -p 30778 timwoo0@pc602.emulab.net   
+node-8  pcvm601-19      pcvm    ssh -p 30785 timwoo0@pc601.emulab.net   
+node-9  pcvm602-6       pcvm    ssh -p 30779 timwoo0@pc602.emulab.net
+```
+
+
+2. Update source list and install java, install vim 
+
+Java is alreay installed on your node, *so you can skip this step*. 
+```
+##### SKIP THIS STEP!!!!!!!!!!
 $ sudo apt-get update
 $ sudo apt-get install default-jdk
 $ java -version
 $ sudo apt-get install vim
 ```
 
-2. Adding Hadoop user
-```
-$ sudo adduser timwoo0 sudo
-```
 
-3. Switch to hadoop user, and genrate ssh key for log in without password
+3. genrate ssh key for log in without password
 ```
-$ su timwoo0
 $ ssh-keygen -t rsa -P ""
 $ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
-$ ssh localhost
+$ ssh localhost  # verify you don't need to enter a password
 ```
 
-4. Intsall Hadoop 
+4. Install Hadoop 
 ```
 $ sudo wget http://mirrors.sonic.net/apache/hadoop/common/hadoop-2.6.0/hadoop-2.6.0.tar.gz
 $ sudo tar -zxvf ./hadoop-2.6.0.tar.gz -C /usr/local
+$ cd /usr/local
 $ sudo mv ./hadoop-2.6.0/ ./hadoop 
 $ sudo chown -R timwoo0 ./hadoop 
 ```
 
-5. Setup Configuration for Hadoop
+5. Setup Configuration for Hadoop \\
 5.1 
 ```
 $ vi ~/.bashrc  ## Add these lines:
