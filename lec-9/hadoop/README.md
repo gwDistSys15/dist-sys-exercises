@@ -137,6 +137,12 @@ $ ./sbin/stop-dfs.sh
 
 5.6 Examples
 
+Please remeber to format datanode first using `$  /usr/local/hadoop/bin/hdfs namenode -format`
+
+After starting hadoop using `$ /usr/local/hadoop/sbin/start-all.sh` , then process your example. 
+
+After finished process using `$ /usr/local/hadoop/sbin/stop-all.sh` to close hadoop. 
+
 ```
 Option 1: Using jar file to run grep: 
 
