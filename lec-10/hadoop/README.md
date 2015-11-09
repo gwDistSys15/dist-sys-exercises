@@ -27,9 +27,9 @@ Try to run the wordcount python program on your Koding.com VM:
 cat romeo-short.txt | python wordcount.py | sort | python reduce.py
 ```
 
-Upload the full ``romeo.txt`` file and ``wordcount.py`` to your S3 bucket.  Then submit a new Step in the EMR cluster with these settings:
+Upload the full ``romeo.txt`` file and ``wordcount.py`` to your S3 bucket.  Then use the website to submit a new Step in the EMR cluster with these settings:
 
-  - Mapper: ``s3://gwdistsys-students/YOURGROUP/tweet.py``
+  - Mapper: ``s3://gwdistsys-students/YOURGROUP/wordcount.py``
   - Input: ``s3://gwdistsys-students/YOURGROUP/romeo.txt``
   - Output: ``s3://gwdistsys-students/YOURGROUP/UNIQUENAME``
   - Reducer: ``aggregate``
