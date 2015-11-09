@@ -1,5 +1,41 @@
 # Hadoop Programming
 
+## Setup S3 Access
+On your koding.com VM run these commands:
+```
+sudo apt-get install s3cmd
+s3cmd --configure
+```
+When prompted fill in these values:
+```
+Access Key: AKIAJGRETOWN7MCRECO   (ADD LETTER)
+Secret Key: se/Phejnzx94fWILQeg+kBuo3HjLlze3hAjDzSA   (ADD LETTER) 
+```
+Use the default for all other options, except for the last where you must hit ``Y`` to save your changes.
+
+You can now verify that S3 is working correctly by running this command to show the contents of our bucket:
+```
+s3cmd ls s3://gwdistsys-students
+```
+
+Next, create a text file containing the name of all students in your group and put it into your S3 bucket using the command line interface.  Log into the AWS web portal and use the S3 page to verify your file uploaded correctly.
+
+## Python Test
+Try to run the wordcount python program on your Koding.com VM:
+
+```
+cat romeo-short.txt | python wordcount.py | sort | python reduce.py
+```
+
+Upload the full ``romeo.txt`` file and ``wordcount.py`` to your S3 bucket.  Then submit a new Step in the EMR cluster with these settings:
+
+  - Mapper: ``s3://gwdistsys-students/YOURGROUP/tweet.py``
+  - Input: ``s3://gwdistsys-students/YOURGROUP/romeo.txt``
+  - Output: ``s3://gwdistsys-students/YOURGROUP/UNIQUENAME``
+  - Reducer: ``aggregate``
+
+Watch the status of your job and look at the logs.  When the job completes, check the output. 
+
 ## Airline Data
 This data set includes information about all US flights, including information about delays.  The basic format of the data is:
 ```
