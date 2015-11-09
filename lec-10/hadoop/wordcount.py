@@ -1,22 +1,18 @@
-#!/usr/bin/python
-#
-#  WordCount mapper in Python
-
+#!/usr/bin/env python
 
 import sys
-import re
 
-def main(argv):
-    line = sys.stdin.readline()
-    pattern = re.compile("[a-zA-Z][a-zA-Z0-9]*")
-    try:
-        while line:
-            for word in pattern.findall(line):
-                print word + "\t" + "1"
-            line = sys.stdin.readline()
-    except "end of file":
-        return None
-
-if __name__ == "__main__":
-    main(sys.argv)
-
+# input comes from STDIN (standard input)
+for line in sys.stdin:
+    # remove leading and trailing whitespace
+    line = line.strip()
+    # split the line into words
+    words = line.split()
+    # increase counters
+    for word in words:
+        # write the results to STDOUT (standard output);
+        # what we output here will be the input for the
+        # Reduce step, i.e. the input for reducer.py
+        #
+        # tab-delimited; the trivial word count is 1
+        print '%s\t%s' % (word, 1)
