@@ -3,10 +3,7 @@ This exercise will help you understand how different P2P network architectures b
 
 You should either download these files to your own computer and view them locally, or put them in the ``Web`` directory of your Koding.com VM so that you will be able to view the web pages produced by the system.
 
-### Submission
-**This assignment is due Tuesday 11/24 at 11:59PM.**
-
-Work must be done in groups of 1-3 students.  Register your team [to get a github repo here](https://classroom.github.com/group-assignment-invitations/aeaeb8299f81479c0ce9af3d1c150c98).
+See the due date and submission instructions at the bottom of this page!
 
 ## Ring network
 The sample files I've provided show how to define and draw a ring network.  The ``graph.html`` file has all the code needed to draw a set of nodes and the edges between them.  It gets the data that defines the network topology by reading the ``ring.js`` file.  You won't need to modify the ``graph.html`` file, or even understand how it works.  Try opening the file in your web browser to see the graph.  Note that the script tries to automatically place the nodes so they are evenly spaced; you may have to refresh the screen to get a reasonable placement. It's also fun to watch them fly around.
@@ -34,8 +31,15 @@ To get a bonus, extend the Javascript code in the html file so that it does one 
   - Click a node to highlight all of the nodes that would be reached by a Gnutella v1 or v2 query (i.e., all within 7 or 3 hops)
   - Make the Chord graph nodes be statically positioned in a nice circle instead of using the "force graph" layout currently being used.
   - Click a node to highlight the path that would be taken in Chord to go from that node to node 17 (or have a way to select both the source and destination of a query).
-  - Extend the Chord program so that instead of using IDs 0,1,2,3...N each node will pick a random ID number from 0...2^16. Display the ID inside the node circle. 
+  - Extend the Chord program so that instead of using IDs 0,1,2,3...N each node will pick a random ID number from 0...2^16. Display the ID inside the node circle. Combine this with the previous step to be even cooler.
+  - Other interesting things you can think of...
 
 To do these you will have to learn some javascript and how to use the [D3 visualization library](http://d3js.org/). There are tons of examples available online.  [This example might help](http://jsfiddle.net/tristanreid/xReHA/636/).
 
 
+# Submission
+**This assignment is due Tuesday 11/24 at 11:59PM.**
+
+Work must be done in groups of 1-3 students.  Register your team [to get a github repo here](https://classroom.github.com/group-assignment-invitations/aeaeb8299f81479c0ce9af3d1c150c98).
+
+Your final repository should be clean and should contain a README.md file briefly describing how your programs work and any bonus features you added. Create an issue in your repository and tag @wenhui when your code is complete.
