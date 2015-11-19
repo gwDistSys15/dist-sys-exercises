@@ -3,7 +3,7 @@ This exercise will help you understand how different P2P network architectures b
 
 You should either download these files to your own computer and view them locally, or put them in the ``Web`` directory of your Koding.com VM so that you will be able to view the web pages produced by the system.
 
-## Submission
+### Submission
 **This assignment is due Tuesday 11/24 at 11:59PM.**
 
 Work must be done in groups of 1-3 students.  Register your team [to get a github repo here](https://classroom.github.com/group-assignment-invitations/aeaeb8299f81479c0ce9af3d1c150c98).
@@ -37,4 +37,5 @@ To get a bonus, extend the Javascript code in the html file so that it does one 
   - Extend the Chord program so that instead of using IDs 0,1,2,3...N each node will pick a random ID number from 0...2^16. Display the ID inside the node circle. 
 
 To do these you will have to learn some javascript and how to use the [D3 visualization library](http://d3js.org/). There are tons of examples available online.  [This example might help](http://jsfiddle.net/tristanreid/xReHA/636/).
+
 
