@@ -19,9 +19,16 @@ Next you should write a program that creates a network topology similar to the u
 Write a new program that creates an adjacencyList that meets this criteria. Your program should take inputs to indicate the number of leaf nodes (default 1000), number of Ultra Peers (default 256), number of connections for each Leaf Node (default 3), and number of connections for each Ultra Peer (default 32).
 
 ## Chord
-In Chord, nodes are structured in a ring with links to two adjacent nodes, plus a finger table with additional links to speed up lookups.  Thus node ``i`` will have ``m`` total links to nodes ``i+2^0, i+2^1, i+2^2, i+2^3, ... i+2^m``.
+In Chord, nodes are structured in a ring with links to two adjacent nodes, plus a finger table with additional links to speed up lookups.  Thus node ``i`` will have ``m`` total links to nodes ``i+2^0, i+2^1, i+2^2, i+2^3, ... i+2^m``.   For simplicity, we will ignore the fact that nodes typically pick a random ID to select the region of the hash space they will control. Instead, you can just use IDs 0,1,2,3,....N.  For example, Node 15 should have links to nodes: 15+1, 15+2, 15+4, 15+8, etc.
 
 Write a program that will create this topology.  Your program should have parameters that specify the total number of nodes (default 64) and the number of entries in the finger table (default 6).
 
-## Make it interactive
-If you have time (and sufficient Javascript expertise), take the graph display a step further so that selecting a node will highlight it and all of its edges.  [This example might help](http://jsfiddle.net/tristanreid/xReHA/636/).
+## Bonus: Make it better
+To get a bonus, extend the Javascript code in the html file so that it does one or more of the following:
+  - Click a node to highlight all of its outgoing edges
+  - Click a node to highlight all of the nodes that would be reached by a Gnutella v1 or v2 query (i.e., all within 7 or 3 hops)
+  - Make the Chord graph nodes be statically positioned in a nice circle instead of using the "force graph" layout currently being used.
+  - Click a node to highlight the path that would be taken in Chord to go from that node to node 17 (or have a way to select both the source and destination of a query).
+  - Extend the Chord program so that instead of using IDs 0,1,2,3...N each node will pick a random ID number from 0...2^16. Display the ID inside the node circle. 
+
+To do these you will have to learn some javascript and how to use the [D3 visualization library](http://d3js.org/). There are tons of examples available online.  [This example might help](http://jsfiddle.net/tristanreid/xReHA/636/).
